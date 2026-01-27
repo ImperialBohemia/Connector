@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pages = await getSheetData();
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://connector-app-flame.vercel.app";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://connector-live.vercel.app";
 
   // The slug that is being served as the Homepage (Root)
   // We must exclude it from the sub-pages list to avoid Duplicate Content (SEO Cannibalization)

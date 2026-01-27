@@ -25,9 +25,9 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  name: "Connector Reviews",
-  description: "Expert reviews and comparisons for the best products. We help you find the best value instantly.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://connector-app-flame.vercel.app",
+  name: "Connector Live",
+  description: "The world's smartest autonomous review system. We help you find the best value instantly through data-driven analysis.",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://connector-live.vercel.app",
   author: "Imperial Bohemia",
   company: {
     name: "Imperial Bohemia",
