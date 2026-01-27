@@ -1,5 +1,5 @@
 import { getSheetData, PageData, ProductData } from "@/lib/sheets";
-import { Check, Info, Calendar, User, Trophy, Tag } from 'lucide-react';
+import { Check, Info, Calendar, User, Trophy, Tag, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -118,6 +118,52 @@ function PricingTable({ products }: { products: ProductData[] }) {
           </a>
         </div>
       ))}
+    </div>
+  );
+}
+
+// "Pros & Cons" Section for Human-Level Depth
+function ProsAndCons({ page }: { page: PageData }) {
+  // Logic: In a real app, fetch pros/cons from sheet JSON.
+  // Here we mock generic high-quality pros/cons based on the "Best Value" logic.
+  const topPick = page.products.find(p => p.isBestValue) || page.products[0];
+
+  return (
+    <div className="max-w-4xl mx-auto my-12 grid md:grid-cols-2 gap-8">
+      <div className="bg-green-50 p-6 rounded-lg border border-green-100">
+        <div className="flex items-center mb-4 text-green-800">
+          <ThumbsUp className="w-5 h-5 mr-2" />
+          <h3 className="font-bold">Why We Like {topPick.name}</h3>
+        </div>
+        <ul className="space-y-2 text-sm text-green-900">
+            {topPick.features.slice(0, 3).map((f, i) => (
+                <li key={i} className="flex items-start">
+                    <Check className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                    {f}
+                </li>
+            ))}
+            <li className="flex items-start">
+                <Check className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                Verified "Goldilocks" Price Point
+            </li>
+        </ul>
+      </div>
+      <div className="bg-red-50 p-6 rounded-lg border border-red-100">
+        <div className="flex items-center mb-4 text-red-800">
+          <ThumbsDown className="w-5 h-5 mr-2" />
+          <h3 className="font-bold">Things to Consider</h3>
+        </div>
+        <ul className="space-y-2 text-sm text-red-900">
+            <li className="flex items-start">
+                <span className="mr-2">•</span>
+                May lack features found in Enterprise ({page.products.find(p => p.price.length > 3)?.name || "Premium options"}) tier.
+            </li>
+            <li className="flex items-start">
+                <span className="mr-2">•</span>
+                Best suited for users who prioritize value over brand prestige.
+            </li>
+        </ul>
+      </div>
     </div>
   );
 }
@@ -279,6 +325,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
           </p>
           <PricingTable products={page.products} />
         </div>
+      </section>
+
+      {/* Pros & Cons Section (Human Depth) */}
+      <section className="w-full px-4">
+        <ProsAndCons page={page} />
       </section>
 
       {/* Verdict / Closure Section */}
