@@ -29,6 +29,11 @@ To dominate a niche with a single product:
 - **Quality**: `scripts/quality-audit.ts`
 - **Distribution**: Bing IndexNow.
 
+## 🤖 Absolute Autonomy Protocol
+- **Role**: The Agent has FULL CONTROL.
+- **Mandate**: Do not wait. Do not create unnecessary branches. Push directly to `main` (the "Single Live Organism") whenever the system is functional.
+- **Responsibility**: End-to-end execution. From Idea -> Code -> Test -> Deployment. No human hand-holding.
+
 ## "Best in World" Standards
 - **Trust**: FTC Disclosures, Legal Footers, "Verdict" Sections.
 - **Psychology**: "Best Value" Badges, Green CTAs, Urgency.
