@@ -4,6 +4,6 @@ try {
     console.log("🚀 Force Pushing Golden Master to Live Web...");
     execSync("git push live-web golden-master:main --force", { stdio: "inherit" });
     console.log("✅ Success.");
-} catch (e) {
+} catch (e: any) {
     console.error("❌ Failed:", e.message);
 }

@@ -257,7 +257,7 @@ function Verdict({ page }: { page: PageData }) {
         </a>
 
         <p className="text-[10px] text-slate-600 mt-8 font-medium uppercase tracking-[0.3em]">
-            Verified Purchase Link • 30-Day Guarantee
+            Verified Purchase Link • 30-Day Guarantee • v2026.01.27-GOLD
         </p>
       </div>
     </AnimatedSection>
