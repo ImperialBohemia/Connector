@@ -1,21 +1,21 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  --color-trust-blue: #0f172a; /* Slate 900 */
-  --color-trust-light: #f8fafc; /* Slate 50 */
-  --color-action-green: #16a34a; /* Green 600 */
-  --color-action-hover: #15803d; /* Green 700 */
-  --font-sans: 'Inter', system-ui, sans-serif;
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
 }
 
 body {
-  background-color: var(--color-trust-light);
-  color: var(--color-trust-blue);
-  font-family: var(--font-sans);
-  line-height: 1.6;
-}
-
-h1, h2, h3 {
-  font-weight: 700;
-  letter-spacing: -0.025em;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
 }

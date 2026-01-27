@@ -1,42 +1,36 @@
-# Connector - World Class Web Foundation
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-Welcome to **Connector**, the central hub for building world-class, mobile-first web applications using Next.js and high-quality engineering standards. This repository serves as the foundation and "brain" for our projects, ensuring consistency, security, and top-tier performance.
+## Getting Started
 
-## 🚀 Tech Stack
+First, run the development server:
 
-- **Framework:** Next.js (App Router, TypeScript)
-- **Styling:** Tailwind CSS (Mobile-first)
-- **Quality:** ESLint, Prettier, Husky, Lint-staged
-- **Deployment:** Vercel (Production grade)
-- **AI Integration:** Jules AI Connector
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-## 📂 Architecture
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-- `/app` - Next.js App Router (Server Components by default)
-- `/docs` - Comprehensive documentation for Humans and AI
-- `.github` - Issue templates, PR templates, Actions
-- `public` - Static assets
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-## 📖 Documentation
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-- **[AI Agents (AGENTS.md)](./AGENTS.md)**: Instructions for AI working in this repo.
-- **[Infrastructure (docs/INFRASTRUCTURE.md)](./docs/INFRASTRUCTURE.md)**: Vercel & GitHub setup details.
-- **[Jules Integration (docs/INTEGRATION_JULES.md)](./docs/INTEGRATION_JULES.md)**: How to connect Jules AI with Bing Webmasters.
+## Learn More
 
-## 🛠️ Development
+To learn more about Next.js, take a look at the following resources:
 
-1. **Install:** \`npm install\`
-2. **Dev:** \`npm run dev\`
-3. **Build:** \`npm run build\`
-4. **Lint:** \`npm run lint\`
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## 🤝 Contributing
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-We follow strict best practices.
-- **Commits:** Verified by Husky.
-- **Code:** Typed, Linted, Prettified.
-- **Mobile First:** All UI must start from mobile view.
+## Deploy on Vercel
 
-## 🔒 Security
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-See [SECURITY.md](./SECURITY.md).
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
