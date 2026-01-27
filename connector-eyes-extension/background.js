@@ -39,13 +39,22 @@ async function handleUserCommand(command, apiKey) {
     ephemeralImage = null; // Explicit GC hint
 
     // 5. ACT: Execute the plan
-    if (analysis.action) {
+    if (analysis.actions && analysis.actions.length > 0) {
+       // Send the entire plan to Content Script for smooth execution
+       await chrome.tabs.sendMessage(tab.id, {
+         type: "EXECUTE_PLAN",
+         plan: analysis.actions,
+         explanation: analysis.explanation
+       });
+
+       chrome.runtime.sendMessage({ type: "AGENT_RESPONSE", text: `I am executing: ${analysis.explanation}` });
+    } else if (analysis.action) {
+       // Fallback for single action
        await chrome.tabs.sendMessage(tab.id, {
          type: "EXECUTE_ACTION",
          action: analysis.action,
          params: analysis.params
        });
-
        chrome.runtime.sendMessage({ type: "AGENT_RESPONSE", text: `I am executing: ${analysis.explanation}` });
     } else {
        chrome.runtime.sendMessage({ type: "AGENT_RESPONSE", text: `Analysis complete: ${analysis.explanation}` });
@@ -74,15 +83,25 @@ async function analyzeWithGPT4o(userPrompt, base64Image, pageMap, apiKey) {
 
   Output JSON format ONLY:
   {
-    "explanation": "Brief text explaining what you see and what you will do.",
-    "action": "CLICK" | "TYPE" | "SCROLL" | "DONE",
-    "params": {
-      "selector": "CSS selector or description of element",
-      "text": "Text to type (if TYPE)",
-      "x": number (0-100 percentage width),
-      "y": number (0-100 percentage height)
-    }
+    "explanation": "Brief text explaining the plan.",
+    "actions": [
+      {
+        "type": "CLICK" | "TYPE" | "SCROLL" | "WAIT",
+        "params": {
+          "selector": "CSS selector",
+          "text": "Text (for TYPE)",
+          "x": number (percentage 0-100),
+          "y": number (percentage 0-100),
+          "duration": ms (for WAIT)
+        }
+      }
+    ]
   }
+
+  IMPORTANT: Plan a SMOOTH sequence.
+  - If you need to type in a field, first CLICK it, then WAIT (100-300ms), then TYPE.
+  - If the element is far down, SCROLL first, then WAIT (500ms), then CLICK.
+  - Do not just return one action. Return the FULL SEQUENCE to complete the user's intent if possible.
 
   Note: For coordinates, you can use the 'x' and 'y' from the DOM Map (which are pixels) converted to percentages of the window size, or estimate from the screenshot.
   If you can identify a reliable CSS selector (or use text matching), prefer that.
