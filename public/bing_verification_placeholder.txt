@@ -1,0 +1,3 @@
+This is a placeholder for Bing verification.
+Replace this file with the actual key file provided by Bing Webmaster Tools.
+The filename should be the key itself (e.g., 12345abcde.txt).
