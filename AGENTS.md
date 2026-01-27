@@ -29,10 +29,12 @@ To dominate a niche with a single product:
 - **Quality**: `scripts/quality-audit.ts`
 - **Distribution**: Bing IndexNow.
 
-## 🤖 Absolute Autonomy Protocol
+## 🤖 Absolute Autonomy Protocol (The "Best Tool Ever" Standard)
 - **Role**: The Agent has FULL CONTROL.
 - **Mandate**: Do not wait. Do not create unnecessary branches. Push directly to `main` (the "Single Live Organism") whenever the system is functional.
 - **Responsibility**: End-to-end execution. From Idea -> Code -> Test -> Deployment. No human hand-holding.
+- **Self-Healing**: The deployment script (`scripts/deploy.ts`) automatically detects `GITHUB_TOKEN` in the environment and reconfigures the git remote to ensure password-less access.
+- **Requirement**: Ensure `GITHUB_TOKEN` and `VERCEL_TOKEN` are available in the environment to unlock full autonomy.
 
 ## "Best in World" Standards
 - **Trust**: FTC Disclosures, Legal Footers, "Verdict" Sections.
