@@ -3,13 +3,14 @@
 // 1. Listen for messages from Side Panel
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "USER_COMMAND") {
-    handleUserCommand(message.command, message.apiKey);
+    handleUserCommand(message.command, message.apiKey, message.homeBaseUrl);
     sendResponse({ status: "processing" }); // Acknowledge receipt
     return true; // Keep channel open for async work
   }
 });
 
-async function handleUserCommand(command, apiKey) {
+async function handleUserCommand(command, apiKey, homeBaseUrl) {
+  await logToHomeBase(homeBaseUrl, "INFO", "User sent command: " + command);
   try {
     // 1. Get the Active Tab
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -32,7 +33,9 @@ async function handleUserCommand(command, apiKey) {
     }
 
     // 3. THINK: Send to OpenAI (Jules Brain)
-    const analysis = await analyzeWithGPT4o(command, screenshotDataUrl, pageMap, apiKey);
+    // Fetch Remote Brain (System Prompt) if available
+    const remoteBrain = await fetchRemoteBrain(homeBaseUrl);
+    const analysis = await analyzeWithGPT4o(command, screenshotDataUrl, pageMap, apiKey, remoteBrain);
 
     // 4. CLEANUP: Immediately nullify the image to save RAM
     let ephemeralImage = screenshotDataUrl;
@@ -63,11 +66,39 @@ async function handleUserCommand(command, apiKey) {
   } catch (error) {
     console.error(error);
     chrome.runtime.sendMessage({ type: "AGENT_ERROR", text: error.message });
+    await logToHomeBase(homeBaseUrl, "ERROR", error.message, { stack: error.stack });
   }
 }
 
-async function analyzeWithGPT4o(userPrompt, base64Image, pageMap, apiKey) {
-  const systemPrompt = `
+async function logToHomeBase(url, level, message, context = {}) {
+    if (!url) return; // No home base configured
+    try {
+        await fetch(`${url}/api/connector/logs`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ level, message, context })
+        });
+    } catch (e) {
+        console.warn("Failed to report to Home Base:", e);
+    }
+}
+
+async function fetchRemoteBrain(homeBaseUrl) {
+    if (!homeBaseUrl) return null;
+    try {
+        const res = await fetch(`${homeBaseUrl}/api/connector/brain`);
+        if (res.ok) {
+            return await res.json();
+        }
+    } catch (e) {
+        console.warn("Could not fetch remote brain:", e);
+    }
+    return null;
+}
+
+async function analyzeWithGPT4o(userPrompt, base64Image, pageMap, apiKey, remoteBrain) {
+  // Use Remote System Prompt if available, otherwise fallback to local hardcoded one
+  const systemPrompt = (remoteBrain && remoteBrain.systemPrompt) ? remoteBrain.systemPrompt : `
   You are Jules, an AI Browser Agent.
   You have "Dual Vision":
   1. A SCREENSHOT of the visible viewport.

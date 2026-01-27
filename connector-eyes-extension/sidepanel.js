@@ -3,17 +3,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const sendBtn = document.getElementById('send-btn');
   const chatHistory = document.getElementById('chat-history');
   const apiKeyInput = document.getElementById('apikey');
+  const homeBaseInput = document.getElementById('homebase');
 
-  // Load API Key from storage
-  chrome.storage.local.get(['openai_key'], (result) => {
-    if (result.openai_key) {
-      apiKeyInput.value = result.openai_key;
-    }
+  // Load Settings from storage
+  chrome.storage.local.get(['openai_key', 'home_base_url'], (result) => {
+    if (result.openai_key) apiKeyInput.value = result.openai_key;
+    if (result.home_base_url) homeBaseInput.value = result.home_base_url;
   });
 
-  // Save API Key on change
+  // Save Settings on change
   apiKeyInput.addEventListener('change', () => {
     chrome.storage.local.set({ openai_key: apiKeyInput.value });
+  });
+  homeBaseInput.addEventListener('change', () => {
+    chrome.storage.local.set({ home_base_url: homeBaseInput.value });
   });
 
   function addMessage(text, sender) {
@@ -42,7 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.runtime.sendMessage({
       type: "USER_COMMAND",
       command: text,
-      apiKey: apiKeyInput.value
+      apiKey: apiKeyInput.value,
+      homeBaseUrl: homeBaseInput.value
     }, (response) => {
       sendBtn.disabled = false;
       sendBtn.textContent = 'Send';
