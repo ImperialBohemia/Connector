@@ -144,7 +144,7 @@ function ProsAndCons({ page }: { page: PageData }) {
             ))}
             <li className="flex items-start">
                 <Check className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
-                Verified "Goldilocks" Price Point
+                Verified &quot;Goldilocks&quot; Price Point
             </li>
         </ul>
       </div>
@@ -180,7 +180,7 @@ function KeyTakeaways({ page }: { page: PageData }) {
       </div>
       <ul className="space-y-2 text-slate-700">
         <li><strong>Best Overall:</strong> {topPick.name} offers the best balance of price and features.</li>
-        <li><strong>Quick Verdict:</strong> We analyzed {page.products.length} options for "{page.keyword}".</li>
+        <li><strong>Quick Verdict:</strong> We analyzed {page.products.length} options for &quot;{page.keyword}&quot;.</li>
         <li><strong>Bottom Line:</strong> {page.intro_text.split('.')[0]}.</li>
       </ul>
     </div>

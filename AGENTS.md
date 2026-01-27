@@ -24,7 +24,7 @@ To dominate a niche with a single product:
     - Daily loop checks for low CTR and re-optimizes metadata (Roadmap).
 
 ## Architecture
-- **Brain**: `AGENTS.md`
+- **Brain**: `AGENTS.md` (Strategy) & `INFRASTRUCTURE.md` (System Map).
 - **CMS**: Google Sheets (or internal generator logic).
 - **Quality**: `scripts/quality-audit.ts`
 - **Distribution**: Bing IndexNow.

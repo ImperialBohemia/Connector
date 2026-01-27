@@ -49,7 +49,7 @@ export default function RootLayout({
               <div>
                 <h3 className="text-white font-bold mb-4">Connector Reviews</h3>
                 <p className="text-xs leading-relaxed">
-                  Your trusted source for expert reviews and "Goldilocks" comparisons. We help you find the best value products instantly.
+                  Your trusted source for expert reviews and &quot;Goldilocks&quot; comparisons. We help you find the best value products instantly.
                 </p>
               </div>
               <div>
