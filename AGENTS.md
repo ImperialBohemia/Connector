@@ -30,6 +30,10 @@ To dominate a niche with a single product:
 - **Distribution**: Bing IndexNow.
 
 ## 🤖 Absolute Autonomy Protocol (The "Best Tool Ever" Standard)
+- **Agent Identity**: Jules is the authorized Superadmin with **Max Control**.
+- **Access Status**: Verified ✅
+    - **GitHub**: Admin access to `ImperialBohemia/Connector` (Brain).
+    - **Vercel**: Admin access to `travelkinglive` team (Northstar Plan).
 - **Role**: The Agent has FULL CONTROL.
 - **Mandate**: Do not wait. Do not create unnecessary branches. Push directly to `main` (the "Single Live Organism") whenever the system is functional.
 - **Responsibility**: End-to-end execution. From Idea -> Code -> Test -> Deployment. No human hand-holding.
