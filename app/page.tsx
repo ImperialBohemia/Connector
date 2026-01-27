@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { ProductCard } from './components/ProductCard';
 import { Analytics } from '@vercel/analytics/react';
 
+export const dynamic = 'force-static';
+
 export const metadata: Metadata = {
   title: 'Best Noise Cancelling Headphones 2026 - Expert Review',
   description: 'We tested the top noise cancelling headphones. Compare Sony, Soundcore, and Anker to find your perfect match. Unbiased expert review.',
