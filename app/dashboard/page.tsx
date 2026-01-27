@@ -57,7 +57,7 @@ export default async function ConnectorDashboard() {
       <section>
         <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
           <Globe className="w-5 h-5" />
-          Generated Web Assets ("First Web")
+          Generated Web Assets (&quot;First Web&quot;)
         </h2>
         <div className="bg-slate-900 rounded-lg border border-slate-800 overflow-hidden">
           <table className="w-full text-left text-sm">
