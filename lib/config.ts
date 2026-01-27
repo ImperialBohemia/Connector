@@ -14,10 +14,10 @@ export interface SiteConfig {
     instagram?: string;
   };
   theme: {
-    primary: string; // e.g. #0f172a (slate-900)
-    secondary: string; // e.g. #334155 (slate-700)
-    accent: string; // e.g. #2563eb (blue-600)
-    background: string; // e.g. #f8fafc (slate-50)
+    primary: string; // Deep Black
+    secondary: string; // Rich Charcoal
+    accent: string; // Metallic Gold
+    background: string; // Pure Black
   };
   features: {
     cookieConsent: boolean;
@@ -26,7 +26,7 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   name: "Connector Live",
-  description: "The world's smartest autonomous review system. We help you find the best value instantly through data-driven analysis.",
+  description: "The world's premier autonomous review system. Defining luxury and value through data-driven analysis.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://connector-live.vercel.app",
   author: "Imperial Bohemia",
   company: {
@@ -37,10 +37,10 @@ export const siteConfig: SiteConfig = {
     twitter: "https://twitter.com/connector",
   },
   theme: {
-    primary: "#0f172a",   // Slate 900
-    secondary: "#334155", // Slate 700
-    accent: "#2563eb",    // Blue 600
-    background: "#f8fafc", // Slate 50
+    primary: "#050505",   // Deep Black
+    secondary: "#1a1a1a", // Rich Charcoal
+    accent: "#D4AF37",    // Metallic Gold
+    background: "#000000", // Pure Black
   },
   features: {
     cookieConsent: true,
