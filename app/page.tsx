@@ -1,5 +1,5 @@
 import { getSheetData, PageData, ProductData } from "@/lib/sheets";
-import { Check, Info, Calendar, User, Trophy, Tag, ThumbsUp, ThumbsDown, Star, Zap } from 'lucide-react';
+import { Check, Info, Calendar, User, Trophy, Tag, ThumbsUp, ThumbsDown, Star, Zap, ShieldCheck } from 'lucide-react';
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getSafeLinkProps, cn } from "@/lib/utils";
@@ -11,7 +11,6 @@ export const revalidate = 3600;
 // Generate Metadata for SEO (Root Page)
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getSheetData();
-  // TARGET SLUG: "best-wireless-headphones-2026"
   const page = data.find((p) => p.slug === "best-wireless-headphones-2026") || data[0];
 
   if (!page) {
@@ -55,7 +54,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 // Reusing the PricingTable logic but injecting data
 function PricingTable({ products }: { products: ProductData[] }) {
-  if (!products || products.length === 0) return <div>No product data available.</div>;
+  if (!products || products.length === 0) return <div className="text-white">No product data available.</div>;
 
   return (
     <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto p-6 my-12">
@@ -64,40 +63,35 @@ function PricingTable({ products }: { products: ProductData[] }) {
           key={index}
           delay={index * 0.1}
           className={cn(
-            "relative flex flex-col p-8 bg-white rounded-2xl shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border",
+            "relative flex flex-col p-8 rounded-2xl transition-all duration-500 hover:-translate-y-2 group",
             product.isBestValue
-              ? 'border-blue-500 ring-4 ring-blue-500/10 z-10 scale-105 shadow-blue-900/10'
-              : 'border-slate-100 hover:border-slate-300'
+              ? 'glass-gold ring-1 ring-gold-500/50 z-10 scale-105 shadow-[0_0_50px_rgba(212,175,55,0.15)]'
+              : 'glass-dark hover:border-white/20'
           )}
         >
           {product.isBestValue && (
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wide flex items-center gap-2 shadow-lg">
-              <Trophy className="w-4 h-4" />
-              Best Value Deal
+            <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-gold-gradient text-black px-8 py-2 rounded-full text-xs font-bold uppercase tracking-[0.2em] flex items-center gap-2 shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+              <Trophy className="w-3 h-3" />
+              Premier Choice
             </div>
           )}
 
-          <div className="mb-6">
-             <h3 className="text-xl font-bold text-slate-900 leading-tight mb-2 min-h-[3.5rem] flex items-center">
+          <div className="mb-8 mt-4">
+             <h3 className="text-2xl font-serif font-bold text-slate-100 leading-tight mb-4 min-h-[4rem] flex items-center group-hover:text-gold-400 transition-colors">
                 {product.name}
              </h3>
-             <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-extrabold text-slate-900">{product.price}</span>
-                {product.isBestValue && (
-                    <span className="text-xs font-bold text-green-700 bg-green-100 px-2 py-1 rounded-full">
-                        Lowest Price
-                    </span>
-                )}
+             <div className="flex items-baseline gap-3">
+                <span className="text-4xl font-light text-white tracking-tight">{product.price}</span>
              </div>
           </div>
 
-          <div className="flex-1 mb-8">
-            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Key Features</h4>
+          <div className="flex-1 mb-10">
+            <div className="w-12 h-px bg-white/10 mb-6"></div>
             <ul className="space-y-4">
               {product.features && product.features.map((feature, idx) => (
-                <li key={idx} className="flex items-start text-slate-600">
-                  <Check className="w-5 h-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm font-medium">{feature}</span>
+                <li key={idx} className="flex items-start text-slate-400 group-hover:text-slate-300 transition-colors">
+                  <Check className="w-4 h-4 text-gold-500 mr-3 mt-1 flex-shrink-0" />
+                  <span className="text-sm font-light leading-relaxed">{feature}</span>
                 </li>
               ))}
             </ul>
@@ -106,14 +100,13 @@ function PricingTable({ products }: { products: ProductData[] }) {
           <a
             {...getSafeLinkProps(product.link || "#")}
             className={cn(
-              "w-full py-4 px-6 rounded-xl font-bold text-center transition-all duration-300 shadow-md flex items-center justify-center gap-2",
+              "w-full py-4 px-6 rounded-none uppercase tracking-[0.15em] text-xs font-bold text-center transition-all duration-300 flex items-center justify-center gap-2 border",
               product.isBestValue
-                ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-blue-500/25 hover:scale-[1.02]'
-                : 'bg-slate-100 text-slate-800 hover:bg-slate-200 hover:scale-[1.02]'
+                ? 'bg-gold-500 text-black border-gold-500 hover:bg-gold-400 hover:scale-[1.02]'
+                : 'bg-transparent text-white border-white/20 hover:border-gold-500 hover:text-gold-400'
             )}
           >
-            {product.isBestValue ? "Get Best Deal Now" : "Check Current Price"}
-            <ArrowRight className="w-4 h-4" />
+            {product.isBestValue ? "Acquire Best Deal" : "Check Availability"}
           </a>
         </AnimatedSection>
       ))}
@@ -126,43 +119,45 @@ function ProsAndCons({ page }: { page: PageData }) {
   const topPick = page.products.find(p => p.isBestValue) || page.products[0];
 
   return (
-    <div className="max-w-5xl mx-auto my-16 grid md:grid-cols-2 gap-8 px-4">
-      <AnimatedSection className="bg-green-50/50 p-8 rounded-2xl border border-green-100 backdrop-blur-sm">
-        <div className="flex items-center mb-6 text-green-800">
-          <div className="p-2 bg-green-100 rounded-lg mr-3">
-             <ThumbsUp className="w-6 h-6" />
+    <div className="max-w-6xl mx-auto my-24 grid md:grid-cols-2 gap-12 px-6">
+      <AnimatedSection className="glass-dark p-10 rounded-3xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/5 rounded-full blur-3xl group-hover:bg-green-500/10 transition-colors"></div>
+        <div className="flex items-center mb-8">
+          <div className="p-3 bg-green-900/30 border border-green-500/30 rounded-full mr-4 text-green-400">
+             <ThumbsUp className="w-5 h-5" />
           </div>
-          <h3 className="font-bold text-xl">Why We Like {topPick.name}</h3>
+          <h3 className="font-serif text-2xl text-white">The Excellence of {topPick.name}</h3>
         </div>
-        <ul className="space-y-4">
+        <ul className="space-y-5">
             {topPick.features.slice(0, 3).map((f, i) => (
-                <li key={i} className="flex items-start text-green-900">
-                    <Check className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-green-600" />
-                    <span className="font-medium">{f}</span>
+                <li key={i} className="flex items-start text-slate-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 mr-4 flex-shrink-0 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+                    <span className="font-light">{f}</span>
                 </li>
             ))}
-            <li className="flex items-start text-green-900">
-                <Check className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-green-600" />
-                <span className="font-medium">Verified &quot;Goldilocks&quot; Price Point</span>
+            <li className="flex items-start text-slate-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 mr-4 flex-shrink-0 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+                <span className="font-light">Unmatched price-to-performance ratio in the luxury segment.</span>
             </li>
         </ul>
       </AnimatedSection>
 
-      <AnimatedSection delay={0.2} className="bg-red-50/50 p-8 rounded-2xl border border-red-100 backdrop-blur-sm">
-        <div className="flex items-center mb-6 text-red-800">
-          <div className="p-2 bg-red-100 rounded-lg mr-3">
-            <ThumbsDown className="w-6 h-6" />
+      <AnimatedSection delay={0.2} className="glass-dark p-10 rounded-3xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-3xl group-hover:bg-red-500/10 transition-colors"></div>
+        <div className="flex items-center mb-8">
+          <div className="p-3 bg-red-900/30 border border-red-500/30 rounded-full mr-4 text-red-400">
+            <ThumbsDown className="w-5 h-5" />
           </div>
-          <h3 className="font-bold text-xl">Things to Consider</h3>
+          <h3 className="font-serif text-2xl text-white">Critical Considerations</h3>
         </div>
-        <ul className="space-y-4">
-            <li className="flex items-start text-red-900">
-                <span className="mr-3 text-red-500 font-bold">•</span>
-                <span className="font-medium">May lack features found in Enterprise ({page.products.find(p => p.price.length > 3)?.name || "Premium options"}) tier.</span>
+        <ul className="space-y-5">
+            <li className="flex items-start text-slate-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 mr-4 flex-shrink-0 shadow-[0_0_8px_rgba(239,68,68,0.6)]"></span>
+                <span className="font-light">May lack features found in Bespoke ({page.products.find(p => p.price.length > 3)?.name || "Premium options"}) tier.</span>
             </li>
-            <li className="flex items-start text-red-900">
-                <span className="mr-3 text-red-500 font-bold">•</span>
-                <span className="font-medium">Best suited for users who prioritize value over brand prestige.</span>
+            <li className="flex items-start text-slate-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 mr-4 flex-shrink-0 shadow-[0_0_8px_rgba(239,68,68,0.6)]"></span>
+                <span className="font-light">Designed for pragmatists, not brand loyalists.</span>
             </li>
         </ul>
       </AnimatedSection>
@@ -175,30 +170,41 @@ function KeyTakeaways({ page }: { page: PageData }) {
   const topPick = page.products.find(p => p.isBestValue) || page.products[0];
 
   return (
-    <AnimatedSection className="bg-white border border-blue-100 p-8 rounded-2xl max-w-5xl mx-auto my-12 shadow-xl shadow-blue-900/5 relative overflow-hidden">
-      <div className="absolute top-0 right-0 p-4 opacity-10">
-        <Zap className="w-24 h-24 text-blue-600" />
-      </div>
-      <div className="flex items-center mb-6 relative z-10">
-        <div className="p-2 bg-blue-600 rounded-lg text-white mr-4 shadow-lg shadow-blue-600/30">
-             <Info className="w-6 h-6" />
+    <AnimatedSection className="relative max-w-5xl mx-auto my-24 p-1">
+      {/* Golden Border Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gold-500/50 to-transparent rounded-3xl opacity-20"></div>
+      
+      <div className="bg-black/80 backdrop-blur-xl border border-white/10 p-12 rounded-3xl relative overflow-hidden">
+        <div className="absolute -top-24 -right-24 opacity-5">
+            <Zap className="w-64 h-64 text-gold-500" />
         </div>
-        <h2 className="text-2xl font-bold text-slate-900">Quick Analysis (TL;DR)</h2>
+
+        <div className="flex items-center mb-10 relative z-10">
+          <div className="h-12 w-1 bg-gold-500 mr-6 shadow-[0_0_15px_rgba(212,175,55,0.8)]"></div>
+          <div>
+              <h2 className="text-3xl font-serif text-white">Intelligence Report</h2>
+              <p className="text-gold-500 text-xs uppercase tracking-[0.25em] mt-1">Automated Analysis</p>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8 relative z-10">
+            <div className="bg-white/5 p-6 rounded-xl border border-white/5 hover:border-gold-500/30 transition-colors">
+                <Star className="w-8 h-8 text-gold-500 mb-4 fill-gold-500/20" />
+                <h4 className="text-white font-bold mb-2">Top Performer</h4>
+                <p className="text-slate-400 text-sm leading-relaxed">{topPick.name} establishes the new standard for the category.</p>
+            </div>
+            <div className="bg-white/5 p-6 rounded-xl border border-white/5 hover:border-gold-500/30 transition-colors">
+                <Zap className="w-8 h-8 text-gold-500 mb-4" />
+                <h4 className="text-white font-bold mb-2">Efficiency</h4>
+                <p className="text-slate-400 text-sm leading-relaxed">Scanned {page.products.length} elite options to distill the absolute best.</p>
+            </div>
+            <div className="bg-white/5 p-6 rounded-xl border border-white/5 hover:border-gold-500/30 transition-colors">
+                <ShieldCheck className="w-8 h-8 text-gold-500 mb-4" />
+                <h4 className="text-white font-bold mb-2">Verdict</h4>
+                <p className="text-slate-400 text-sm leading-relaxed">{page.intro_text.split('.')[0]}.</p>
+            </div>
+        </div>
       </div>
-      <ul className="space-y-4 text-slate-700 relative z-10 text-lg">
-        <li className="flex gap-3">
-            <Star className="w-6 h-6 text-yellow-500 flex-shrink-0 fill-yellow-500" />
-            <span><strong>Best Overall:</strong> {topPick.name} offers the perfect balance of price and features for most users.</span>
-        </li>
-        <li className="flex gap-3">
-            <Zap className="w-6 h-6 text-blue-500 flex-shrink-0" />
-            <span><strong>Efficiency:</strong> We analyzed {page.products.length} options for &quot;{page.keyword}&quot; to save you time.</span>
-        </li>
-        <li className="flex gap-3">
-            <Check className="w-6 h-6 text-green-500 flex-shrink-0" />
-            <span><strong>Bottom Line:</strong> {page.intro_text.split('.')[0]}.</span>
-        </li>
-      </ul>
     </AnimatedSection>
   );
 }
@@ -208,15 +214,15 @@ function TrustSignals() {
   const currentDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
-    <div className="flex flex-wrap justify-center items-center gap-6 text-sm font-medium text-slate-400 mb-10 bg-slate-800/50 py-2 px-6 rounded-full inline-flex">
+    <div className="flex flex-wrap justify-center items-center gap-8 text-xs font-medium text-slate-500 mb-12 uppercase tracking-widest">
        <div className="flex items-center">
-          <Calendar className="w-4 h-4 mr-2 text-blue-400" />
-          <span>Updated: {currentDate}</span>
+          <Calendar className="w-4 h-4 mr-3 text-gold-600" />
+          <span>Last Updated: {currentDate}</span>
        </div>
-       <div className="w-px h-4 bg-slate-700 hidden sm:block"></div>
+       <div className="w-px h-4 bg-white/10 hidden sm:block"></div>
        <div className="flex items-center">
-          <User className="w-4 h-4 mr-2 text-blue-400" />
-          <span>By: Connector Editorial Team</span>
+          <User className="w-4 h-4 mr-3 text-gold-600" />
+          <span>Curated by: Imperial AI</span>
        </div>
     </div>
   );
@@ -226,23 +232,33 @@ function TrustSignals() {
 function Verdict({ page }: { page: PageData }) {
   const winner = page.products.find(p => p.isBestValue) || page.products[0];
   return (
-    <AnimatedSection className="bg-slate-900 text-white py-16 px-8 rounded-3xl max-w-5xl mx-auto my-20 shadow-2xl text-center relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900/20 to-slate-900 opacity-50"></div>
+    <AnimatedSection className="relative max-w-4xl mx-auto my-32 text-center group">
+      {/* Decorative Elements */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gold-500/5 blur-[100px] rounded-full pointer-events-none group-hover:bg-gold-500/10 transition-all duration-1000"></div>
 
-      <div className="relative z-10">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">Final Verdict</h2>
-        <p className="text-lg md:text-xl text-slate-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-            After comprehensive autonomous analysis, <strong>{winner.name}</strong> stands out as the clear winner.
-            It hits the sweet spot between performance and affordability.
+      <div className="relative z-10 border border-gold-500/30 bg-black/80 backdrop-blur-2xl p-12 md:p-20 rounded-[2rem] shadow-2xl">
+        <div className="inline-block mb-8">
+            <Trophy className="w-16 h-16 text-gold-500 mx-auto drop-shadow-[0_0_15px_rgba(212,175,55,0.6)]" />
+        </div>
+        
+        <h2 className="text-4xl md:text-5xl font-serif text-white mb-8">The Definitive Choice</h2>
+        
+        <p className="text-xl md:text-2xl text-slate-300 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+            After rigorous autonomous analysis, <strong>{winner.name}</strong> is awarded the 
+            <span className="text-gold-400 mx-2">Gold Standard</span> 
+            for 2026.
         </p>
+        
         <a
             {...getSafeLinkProps(winner.link || "#")}
-            className="inline-flex items-center bg-green-500 text-white font-bold py-4 px-12 rounded-full hover:bg-green-600 transition-all hover:scale-105 shadow-lg hover:shadow-green-500/25 text-lg"
+            className="inline-flex items-center justify-center bg-gold-gradient text-black font-bold py-5 px-16 rounded-full hover:scale-105 transition-all shadow-[0_0_30px_rgba(212,175,55,0.4)] text-lg uppercase tracking-widest"
         >
-            <Tag className="w-5 h-5 mr-2" />
-            Claim Deal for {winner.name}
+            Secure Your Deal
         </a>
-        <p className="text-xs text-slate-500 mt-6 font-medium uppercase tracking-widest">30-day money-back guarantee verified</p>
+        
+        <p className="text-[10px] text-slate-600 mt-8 font-medium uppercase tracking-[0.3em]">
+            Verified Purchase Link • 30-Day Guarantee
+        </p>
       </div>
     </AnimatedSection>
   );
@@ -257,15 +273,13 @@ function ArrowRight({ className }: { className?: string }) {
 
 export default async function Page() {
   const data = await getSheetData();
-  // TARGET SLUG: "best-wireless-headphones-2026"
-  // This explicitly grabs the "First Web" content to serve at the root.
   const page = data.find((p) => p.slug === "best-wireless-headphones-2026") || data[0];
 
   if (!page) {
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50">
-            <h1 className="text-2xl font-bold text-slate-900">System Initializing...</h1>
-            <p className="text-slate-600">Please add a row to the Google Sheet or check credentials.</p>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
+            <h1 className="text-3xl font-serif text-gold-500 mb-4">System Initializing...</h1>
+            <p className="text-slate-500 font-light">Establishing secure connection to database.</p>
         </div>
     );
   }
@@ -323,45 +337,57 @@ export default async function Page() {
   };
 
   return (
-    <div className="flex flex-col items-center bg-slate-50 min-h-screen">
+    <div className="flex flex-col items-center min-h-screen overflow-hidden bg-black selection:bg-gold-500 selection:text-black">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
 
       {/* Hero Section */}
-      <section className="w-full bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800 text-white pt-32 pb-24 px-4 text-center border-b border-slate-700 relative overflow-hidden">
-        {/* Abstract Background Pattern */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
-            <div className="absolute -top-20 -left-20 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-            <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-            <div className="absolute -bottom-8 left-20 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
-        </div>
+      <section className="w-full relative min-h-[90vh] flex flex-col justify-center items-center px-4 pt-20 border-b border-white/5">
+        {/* Cinematic Background */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(30,30,30,1),_rgba(0,0,0,1))]"></div>
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
+        
+        {/* Spotlight Effect */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-blue-900/10 to-transparent blur-3xl opacity-30"></div>
 
-        <AnimatedSection className="relative z-10 max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight drop-shadow-2xl bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+        <AnimatedSection className="relative z-10 max-w-5xl mx-auto text-center">
+            <div className="inline-block mb-6 px-4 py-1.5 rounded-full border border-gold-500/30 bg-gold-500/5 backdrop-blur-md">
+                <span className="text-gold-400 text-[10px] uppercase tracking-[0.3em] font-bold">2026 Edition</span>
+            </div>
+            
+            <h1 className="text-5xl md:text-8xl font-serif font-bold mb-10 tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-b from-white via-slate-200 to-slate-500 drop-shadow-2xl">
             {page.title}
             </h1>
+            
             <TrustSignals />
-            <p className="text-xl md:text-2xl text-slate-300 font-light leading-relaxed mb-10">
+            
+            <p className="text-xl md:text-2xl text-slate-400 font-light leading-relaxed mb-12 max-w-3xl mx-auto">
             {page.intro_text}
             </p>
+
+            <div className="flex justify-center animate-bounce duration-[2000ms]">
+                <div className="w-px h-24 bg-gradient-to-b from-gold-500/0 via-gold-500/50 to-gold-500/0"></div>
+            </div>
         </AnimatedSection>
       </section>
 
       {/* AI Summary */}
-      <section className="w-full px-4 -mt-10 relative z-20">
+      <section className="w-full px-4 -mt-20 relative z-20">
          <KeyTakeaways page={page} />
       </section>
 
       {/* Comparison */}
-      <section className="w-full py-20">
-        <div className="container mx-auto px-4">
-          <AnimatedSection className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                Top Recommendations for: {page.keyword}
+      <section className="w-full py-32 bg-black relative">
+        <div className="absolute inset-0 bg-luxury-dark opacity-50"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <AnimatedSection className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">
+                The Elite Selection
             </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                Our autonomous ranking algorithm highlights the best options based on real-time value and performance metrics.
+            <div className="w-24 h-1 bg-gold-500 mx-auto rounded-full mb-8 shadow-[0_0_15px_rgba(212,175,55,0.5)]"></div>
+            <p className="text-lg text-slate-400 max-w-2xl mx-auto font-light">
+                Distilled from thousands of data points, these are the only options that matter.
             </p>
           </AnimatedSection>
           <PricingTable products={page.products} />
@@ -369,29 +395,30 @@ export default async function Page() {
       </section>
 
       {/* Pros & Cons */}
-      <section className="w-full px-4 bg-white py-12">
+      <section className="w-full px-4 bg-black border-t border-white/5 relative overflow-hidden py-12">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900/20 via-black to-black"></div>
         <ProsAndCons page={page} />
       </section>
 
       {/* Verdict */}
-      <section className="w-full px-4">
+      <section className="w-full px-4 pb-32">
          <Verdict page={page} />
       </section>
 
       {/* Footer CTA */}
       {page.affiliate_link && (
-        <section className="w-full py-24 px-4 bg-white border-t">
-          <AnimatedSection className="container mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold text-slate-900 mb-6">Still Undecided?</h2>
-            <p className="text-xl text-slate-600 mb-10">
-              Join thousands of smart shoppers who chose our top recommendation.
+        <section className="w-full py-32 px-4 bg-black border-t border-white/5">
+          <AnimatedSection className="container mx-auto max-w-4xl text-center">
+            <h2 className="text-4xl font-serif text-white mb-8">Uncertainty Eliminated</h2>
+            <p className="text-xl text-slate-400 mb-12 font-light">
+              Join the distinguished few who refuse to settle for second best.
             </p>
             <a
               {...getSafeLinkProps(page.affiliate_link)}
-              className="inline-flex items-center justify-center bg-slate-100 text-slate-900 font-bold py-4 px-10 rounded-xl hover:bg-slate-200 transition-all text-lg border border-slate-200"
+              className="inline-flex items-center justify-center bg-transparent text-white font-medium py-5 px-12 rounded-none hover:bg-white hover:text-black transition-all text-lg border border-white/20 uppercase tracking-[0.2em]"
             >
-              Check Official Site
-              <ArrowRight className="w-5 h-5 ml-2" />
+              Verify Official Price
+              <ArrowRight className="w-5 h-5 ml-4" />
             </a>
           </AnimatedSection>
         </section>

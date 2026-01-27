@@ -80,7 +80,7 @@ async function deploy() {
   // 6. Publication (Live Web)
   console.log("\n🌍 Phase 6: Publishing to Live Web (VercelWeb)");
   // Force push to ensure the live site exactly matches the brain's intent
-  runCommand("git push live-web main --force", "Failed to publish to VercelWeb (Optional - check permissions).");
+  runCommand("git push live-web HEAD:main --force", "Failed to publish to VercelWeb (Optional - check permissions).");
 
   console.log("\n✅ Mission Complete. System is synchronized and live.");
 }
