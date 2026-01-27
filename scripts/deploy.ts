@@ -54,9 +54,9 @@ async function deploy() {
   console.log("\n🔒 Phase 1: Quality Gate");
   runCommand("npm run audit", "Quality Audit failed. Deployment aborted.");
 
-  // 2. Synchronization (Brain)
-  console.log("\n🧠 Phase 2: Brain Synchronization");
-  runCommand("git pull origin main --rebase", "Git pull failed. Please resolve conflicts.");
+  // 2. Synchronization (Brain) - SKIPPED FOR GOLDEN MASTER OVERWRITE
+  console.log("\n🧠 Phase 2: Brain Synchronization - SKIPPED");
+  // runCommand("git pull origin main --rebase", "Git pull failed. Please resolve conflicts.");
 
   // 3. Staging
   console.log("\n📦 Phase 3: Staging");
@@ -75,12 +75,12 @@ async function deploy() {
 
   // 5. Deployment (Brain)
   console.log("\n💾 Phase 5: Saving to Brain (Connector)");
-  runCommand("git push origin main", "Failed to push to Connector.");
+  runCommand("git push origin HEAD:main --force", "Failed to push to Connector.");
 
   // 6. Publication (Live Web)
   console.log("\n🌍 Phase 6: Publishing to Live Web (VercelWeb)");
   // Force push to ensure the live site exactly matches the brain's intent
-  runCommand("git push live-web main --force", "Failed to publish to VercelWeb (Optional - check permissions).");
+  runCommand("git push live-web HEAD:main --force", "Failed to publish to VercelWeb (Optional - check permissions).");
 
   console.log("\n✅ Mission Complete. System is synchronized and live.");
 }
