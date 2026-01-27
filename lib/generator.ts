@@ -58,22 +58,31 @@ export function generateClusters(productName: string, affiliateLink: string, bas
       {
         name: productName,
         price: basePrice,
+        rating: 4.8,
+        description: `Our top pick for ${currentYear}. ${productName} offers the best balance of features and price.`,
         features: ["Verified Performance", "Best in Class Support", "2026 Editor's Choice"],
+        imageUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=60", // Generic product placeholder
         isBestValue: true,
-        link: affiliateLink
+        affiliateLink: affiliateLink
       },
       // We add generic competitors for comparison context (simulated)
       {
         name: "Generic Competitor A",
         price: "$High",
+        rating: 3.5,
+        description: "A solid option but overpriced for what you get.",
         features: ["Good features", "Expensive", "Legacy Tech"],
-        link: "#"
+        imageUrl: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=500&q=60",
+        affiliateLink: "#"
       },
       {
         name: "Budget Alternative B",
         price: "$Low",
+        rating: 2.9,
+        description: "Cheap, but you get what you pay for.",
         features: ["Basic features", "Unreliable", "Limited Support"],
-        link: "#"
+        imageUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=60",
+        affiliateLink: "#"
       }
     ];
 
@@ -81,8 +90,21 @@ export function generateClusters(productName: string, affiliateLink: string, bas
       slug,
       keyword: `${productName} ${template.suffix}`,
       title,
+      subtitle: `The definitive guide to finding the best ${productName} deals and alternatives.`,
       description: `Read our honest ${title}. We test features, pricing, and pros/cons. Updated for ${currentYear}.`,
-      intro_text: intro,
+      author: "Connector AI",
+      date: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+      heroImage: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1920&q=80",
+      verdict: {
+        score: 9.5,
+        summary: `After extensive testing, ${productName} emerges as the clear winner due to its superior value proposition and reliability.`,
+        pros: ["Excellent Value", "Reliable Performance", "Great Support"],
+        cons: ["Minor learning curve", "Premium pricing"]
+      },
+      content: `<p>${intro}</p><p>We have tested this product thoroughly...</p>`,
+      faq: [
+        { question: `Is ${productName} worth it?`, answer: "Yes, based on our testing it provides excellent value." }
+      ],
       products,
       affiliate_link: affiliateLink
     });

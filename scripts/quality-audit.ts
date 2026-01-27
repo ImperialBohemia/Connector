@@ -10,9 +10,9 @@ function auditPage(page: PageData): string[] {
     errors.push(`[SEO] Title length (${page.title.length}) is non-optimal. Target 30-70 chars.`);
   }
 
-  // 2. Content Depth (Intro)
-  if (page.intro_text.length < 100) {
-    errors.push(`[Content] Intro is too thin (${page.intro_text.length} chars). Bing loves depth.`);
+   // 2. Content Depth (Description/Subtitle)
+   if ((page.description?.length || 0) < 50) {
+     errors.push(`[Content] Description is too thin. Bing loves depth.`);
   }
 
   // 3. Trust Signals (Keyword Check)

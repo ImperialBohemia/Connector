@@ -14,13 +14,25 @@ export interface SiteConfig {
     instagram?: string;
   };
   theme: {
-    primary: string; // e.g. #0f172a (slate-900)
-    secondary: string; // e.g. #334155 (slate-700)
-    accent: string; // e.g. #2563eb (blue-600)
-    background: string; // e.g. #f8fafc (slate-50)
+    // Colors
+    primary: string;   // Main brand color (Headers, Logos)
+    secondary: string; // Secondary text/elements
+    accent: string;    // CTAs, Links, Highlights
+    background: string;// Main page background
+    surface: string;   // Cards, Sidebars, Modals
+
+    // Layout
+    maxWidth: string;  // e.g. '1200px'
+    borderRadius: string; // e.g. '0.5rem'
+
+    // Typography
+    fontHeading: string; // e.g. 'Inter'
+    fontBody: string;    // e.g. 'Inter'
   };
   features: {
     cookieConsent: boolean;
+    stickyHeader: boolean;
+    heroOverlay: boolean;
   };
 }
 
@@ -37,12 +49,22 @@ export const siteConfig: SiteConfig = {
     twitter: "https://twitter.com/connector",
   },
   theme: {
-    primary: "#0f172a",   // Slate 900
-    secondary: "#334155", // Slate 700
-    accent: "#2563eb",    // Blue 600
-    background: "#f8fafc", // Slate 50
+    // "Golden Master" Theme Configuration
+    primary: "#0f172a",    // Slate 900 (Deep, Professional)
+    secondary: "#475569",  // Slate 600 (Readable Contrast)
+    accent: "#2563eb",     // Blue 600 (High-Trust Action)
+    background: "#ffffff", // Pure White (Modern Clean)
+    surface: "#f8fafc",    // Slate 50 (Subtle Separation)
+
+    maxWidth: "1280px",
+    borderRadius: "0.5rem", // 8px (Modern Standard)
+
+    fontHeading: "Inter",
+    fontBody: "Inter",
   },
   features: {
     cookieConsent: true,
+    stickyHeader: true,
+    heroOverlay: true,
   },
 };

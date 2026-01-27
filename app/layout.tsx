@@ -27,16 +27,18 @@ export default function RootLayout({
   const secondaryRgb = hexToRgb(siteConfig.theme.secondary);
   const accentRgb = hexToRgb(siteConfig.theme.accent);
   const backgroundRgb = hexToRgb(siteConfig.theme.background);
+  const surfaceRgb = hexToRgb(siteConfig.theme.surface);
 
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} antialiased bg-slate-50 text-slate-900`}>
+      <body className={`${inter.className} antialiased bg-background text-primary`}>
         <style dangerouslySetInnerHTML={{ __html: `
           :root {
             --color-primary: ${primaryRgb};
             --color-secondary: ${secondaryRgb};
             --color-accent: ${accentRgb};
             --color-background: ${backgroundRgb};
+            --color-surface: ${surfaceRgb};
           }
         `}} />
 
