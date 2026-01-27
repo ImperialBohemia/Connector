@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Connector Eyes Test Page</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; line-height: 1.5; }
+    .section { border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 4px; }
+    .log-area { background: #f0f0f0; padding: 10px; border: 1px solid #999; height: 100px; overflow-y: scroll; font-family: monospace; }
+    .spacer { height: 120vh; background: linear-gradient(#fff, #eee); border-left: 2px dashed #ccc; padding: 20px; color: #999; }
+    button { padding: 5px 10px; cursor: pointer; }
+    input { padding: 5px; margin-right: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Connector Eyes Test Page</h1>
+  <p>Use this page to verify if the extension can "see" and "act".</p>
+
+  <div class="section">
+    <h3>Top Section (Visible)</h3>
+    <label for="name-input">Your Name:</label>
+    <input type="text" id="name-input" placeholder="Type name here...">
+
+    <button id="click-me-top">Click Me (Top)</button>
+
+    <br><br>
+    <label>
+      <input type="checkbox" id="check-terms"> Accept Terms
+    </label>
+  </div>
+
+  <div class="section">
+    <h3>Interaction Log</h3>
+    <div id="log" class="log-area">Waiting for actions...</div>
+    <button onclick="document.getElementById('log').innerHTML = 'Cleared.';">Clear Log</button>
+  </div>
+
+  <div class="spacer">
+    SCROLL DOWN TO FIND MORE ELEMENTS...
+    <br>(Simulating a long page)
+  </div>
+
+  <div class="section">
+    <h3>Bottom Section (Hidden initially)</h3>
+    <button id="click-me-bottom">Click Me (Bottom)</button>
+    <br><br>
+    <label for="secret-code">Secret Code:</label>
+    <input type="password" id="secret-code">
+  </div>
+
+  <script>
+    function log(msg) {
+      const el = document.getElementById('log');
+      const time = new Date().toLocaleTimeString();
+      el.innerHTML += `<br>[${time}] ${msg}`;
+      el.scrollTop = el.scrollHeight;
+    }
+
+    document.getElementById('click-me-top').addEventListener('click', () => log('Top Button Clicked!'));
+    document.getElementById('click-me-bottom').addEventListener('click', () => log('Bottom Button Clicked!'));
+
+    document.getElementById('name-input').addEventListener('input', (e) => log('Name Input Changed: ' + e.target.value));
+    document.getElementById('check-terms').addEventListener('change', (e) => log('Terms Checked: ' + e.target.checked));
+    document.getElementById('secret-code').addEventListener('input', (e) => log('Secret Code Entered.'));
+  </script>
+</body>
+</html>

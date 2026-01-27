@@ -4,6 +4,8 @@
 
 ## Features
 - **Visual Understanding:** Uses GPT-4o Vision to see the page.
+- **Full Page Map:** Uses "Dual Vision" (Screenshot + DOM Map) to understand the entire page structure, even parts that are not currently visible.
+- **Headless Browser Mode:** Turns your logged-in browser into an agent-controlled interface, allowing interaction with sites where you are already authenticated (Google, Amazon, etc.).
 - **RAM Optimized:** Uses "Snap & Forget" strategy to minimize memory usage.
 - **Ghost Cursor:** Visualizes AI actions so you know what's happening.
 - **Secure:** Your OpenAI API Key is stored locally in your browser storage.
