@@ -22,11 +22,40 @@ export interface PageData {
 // Mock data for development or fallback
 const MOCK_DATA: PageData[] = [
   {
+    slug: "best-wireless-headphones-2026",
+    keyword: "Best Wireless Headphones",
+    title: "Best Wireless Headphones 2026: Sony vs Bose vs Apple Review",
+    description: "We tested the top noise-cancelling headphones. See why the Sony WH-1000XM5 wins for value, while Apple dominates effectively.",
+    intro_text: "Finding the perfect pair of wireless headphones is difficult with so many options. We tested the market leaders to bring you the absolute best choices for noise cancellation, sound quality, and comfort in 2026.",
+    affiliate_link: "https://amazon.com/s?k=wireless+headphones&tag=connector-20",
+    products: [
+      {
+        name: "Anker Soundcore Q45",
+        price: "$149.99",
+        features: ["98% Noise Reduction", "50-Hour Battery", "Hi-Res Audio", "Budget Friendly"],
+        link: "https://amazon.com/anker-q45"
+      },
+      {
+        name: "Sony WH-1000XM5",
+        price: "$348.00",
+        features: ["Industry-Leading ANC", "Crystal Clear Calls", "30-Hour Battery", "Lightweight Design"],
+        isBestValue: true,
+        link: "https://amazon.com/sony-xm5"
+      },
+      {
+        name: "Apple AirPods Max",
+        price: "$549.00",
+        features: ["Computational Audio", "Premium Build", "Spatial Audio", "Seamless Ecosystem"],
+        link: "https://amazon.com/airpods-max"
+      }
+    ]
+  },
+  {
     slug: "crm-for-real-estate-agents-in-brno",
     keyword: "CRM pro makléře Brno",
     title: "Best CRM for Real Estate Agents in Brno (2026 Review)",
     description: "Compare the top CRM systems for real estate professionals in Brno.",
-    intro_text: "If you are working in real estate in Brno, you need a CRM that handles local nuances.",
+    intro_text: "If you are working in real estate in Brno, you need a CRM that handles local nuances. We compared the top local and international providers to find the perfect match for independent agents and large brokerages.",
     affiliate_link: "https://example.com/affiliate",
     products: [
       {
@@ -47,35 +76,6 @@ const MOCK_DATA: PageData[] = [
         price: "$$$$",
         features: ["AI Analytics", "Full Automation", "Dedicated Account Manager"],
         link: "https://example.com/premium"
-      }
-    ]
-  },
-  {
-    slug: "ai-video-generators",
-    keyword: "AI Video Generators",
-    title: "Top AI Video Generators vs Human Editors",
-    description: "Synthesia vs HeyGen vs Murf - which one wins?",
-    intro_text: "Video production is changing. Here is how AI tools stack up.",
-    affiliate_link: "#",
-    products: [
-       {
-        name: "Starter Tool",
-        price: "$29/mo",
-        features: ["5 mins video", "10 avatars"],
-        link: "#"
-      },
-      {
-        name: "Pro Suite (Best Value)",
-        price: "$99/mo",
-        features: ["Unlimited video", "Custom Avatar", "4K Export"],
-        isBestValue: true,
-        link: "#"
-      },
-      {
-        name: "Agency Plan",
-        price: "$499/mo",
-        features: ["API Access", "SSO", "Priority Support"],
-        link: "#"
       }
     ]
   }
