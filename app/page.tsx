@@ -346,7 +346,7 @@ export default async function Page() {
       <section className="w-full relative min-h-[90vh] flex flex-col justify-center items-center px-4 pt-20 border-b border-white/5">
         {/* Cinematic Background */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(30,30,30,1),_rgba(0,0,0,1))]"></div>
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
+        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
         
         {/* Spotlight Effect */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-blue-900/10 to-transparent blur-3xl opacity-30"></div>
