@@ -4,17 +4,30 @@ This document maps the external systems (GitHub & Vercel) that power the **Conne
 It serves as a "Brain Extension" to ensure rapid configuration and troubleshooting.
 
 ## 1. GitHub Configuration
-**Status:** ⚠️ **Critical Gap Detected** (No workflows found)
-**Requirement:** The system requires a CI/CD pipeline to ensure "Absolute Autonomy".
+**Status:** ✅ **Active** (Absolute Autonomy Pipeline)
+**Workflow:** `.github/workflows/autonomy.yml`
 
-### Recommended Workflow: `.github/workflows/jules.yml`
-*   **Triggers:** Push to `main`, Pull Request.
-*   **Jobs:**
-    *   `quality-gate`: Runs `npm run lint`, `npm run build`, `npm run audit`.
-    *   `deploy`: (Optional if linked to Vercel Git integration, otherwise via Vercel CLI).
-*   **Permissions Needed:**
-    *   `contents: write` (To push auto-fixes or tags).
-    *   `pull-requests: write` (To comment on PRs).
+### Pipeline Architecture: "Chat -> Live Web"
+1.  **Trigger**: Any push to `main` (initiated by Agent Jules).
+2.  **Action**:
+    *   Installs dependencies (`npm ci`).
+    *   Executes `npm run deploy` (The "Connector" script).
+3.  **Deployment Logic**:
+    *   **Brain Sync**: Pushes code to `ImperialBohemia/Connector`.
+    *   **Live Body Sync**: Force pushes code to `ImperialBohemia/VercelWeb`.
+    *   **Vercel Build**: Automatically triggered by the push to `VercelWeb`.
+
+---
+
+## 2. Visual Verification System ("Connector Eyes")
+The system is self-aware and verifies its own visual integrity.
+
+| Verification Level | Tool | Check |
+| :--- | :--- | :--- |
+| **Logic** | `npm run audit` | SEO depth, keyword density, title length. |
+| **Visual (Mobile)** | `verification/verify_final.py` | iPhone 13 rendering of Verdict Box, Sticky Headers, readability. |
+| **Visual (Desktop)** | `verification/verify_final.py` | 1280px layout, Sidebar presence, Trust Signals. |
+| **Legal** | `verification/verify_final.py` | Existence of Footer Links (Privacy/Terms) & Cookie Consent. |
 
 ---
 

@@ -46,3 +46,5 @@ To dominate a niche with a single product:
 - **Trust**: FTC Disclosures, Legal Footers, "Verdict" Sections.
 - **Psychology**: "Best Value" Badges, Green CTAs, Urgency.
 - **Tech**: Next.js 14, TypeScript, Tailwind, JSON-LD Schemas (Deal, FAQ, Breadcrumb).
+- **Design System**: "Golden Master" Theme (Fluid Typography, Unsplash Integration, Verdict Boxes).
+- **Verification**: All visual changes must be verified using `verification/verify_final.py` (Mobile & Desktop screenshots) to ensure "World-Class" quality.
