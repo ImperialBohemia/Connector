@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 interface ProductCardProps {
   title: string;
@@ -13,18 +14,22 @@ interface ProductCardProps {
 
 export const ProductCard = ({ title, badge, image, price, rating, description, affiliateLink, features }: ProductCardProps) => {
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200 hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
-      <div className="sr-only">Image source: {image}</div>
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200 hover:shadow-xl transition-shadow duration-300 flex flex-col h-full transform transition-all hover:scale-[1.02]">
       {badge && (
         <div className="bg-trust-blue text-white text-xs font-bold px-3 py-1 uppercase tracking-wide text-center">
           {badge}
         </div>
       )}
       <div className="p-6 flex-1 flex flex-col">
-        {/* Image Placeholder - In real app use next/image */}
-        <div className="h-48 bg-slate-100 rounded-lg mb-4 flex items-center justify-center text-slate-400">
-           {/* Allow string image for now, replace with Image comp later */}
-           <span className="text-sm">Product Image: {title}</span>
+        <div className="h-48 bg-white rounded-lg mb-4 flex items-center justify-center overflow-hidden relative">
+           <Image
+             src={image}
+             alt={title}
+             width={400}
+             height={300}
+             className="object-contain max-h-full"
+             priority
+           />
         </div>
 
         <h3 className="text-xl font-bold mb-2 text-slate-900">{title}</h3>
