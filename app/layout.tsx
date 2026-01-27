@@ -5,6 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://connector-app-flame.vercel.app"),
   title: "Top Product Comparisons",
   description: "Expert reviews and comparisons for the best products.",
 };
