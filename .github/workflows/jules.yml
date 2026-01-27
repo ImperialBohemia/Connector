@@ -1,0 +1,40 @@
+name: Connector Absolute Autonomy
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  quality-gate:
+    name: Quality Gate (Lint, Build, Audit)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+    - name: Checkout Brain
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Linting
+      run: npm run lint
+
+    - name: Build Verification
+      run: npm run build
+
+    - name: Quality Audit (SEO & Structure)
+      run: npm run audit
+      env:
+        # Uses Mock Data if secrets are missing, which is expected in CI for now
+        CI: true
