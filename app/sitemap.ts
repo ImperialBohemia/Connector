@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pages = await getSheetData();
-  const baseUrl = "https://connector-app-flame.vercel.app"; // Defined in memory
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://connector-app-flame.vercel.app";
 
   const entries: MetadataRoute.Sitemap = pages.map((page) => ({
     url: `${baseUrl}/${page.slug}`,

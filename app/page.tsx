@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   }
 
-  const baseUrl = "https://connector-app-flame.vercel.app";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://connector-app-flame.vercel.app";
   const ogImage = `https://via.placeholder.com/1200x630.png?text=${encodeURIComponent(page.title)}`;
 
   return {
@@ -220,7 +220,7 @@ export default async function Page() {
     );
   }
 
-  const baseUrl = "https://connector-app-flame.vercel.app";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://connector-app-flame.vercel.app";
 
   // Dynamic Price Validity (1 year from now)
   const validUntil = new Date();
