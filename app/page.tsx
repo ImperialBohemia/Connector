@@ -343,17 +343,21 @@ export default async function Page() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
 
       {/* Hero Section */}
-      <section className="w-full relative min-h-[90vh] flex flex-col justify-center items-center px-4 pt-20 border-b border-white/5">
-        {/* Cinematic Background */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(30,30,30,1),_rgba(0,0,0,1))]"></div>
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
+      <section className="w-full relative min-h-[90vh] flex flex-col justify-center items-center px-4 pt-20 border-b border-white/5 overflow-hidden">
+        {/* Real Unsplash Imagery for Human Feel */}
+        <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 bg-black/60 z-10"></div> {/* Dark Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10"></div> {/* Bottom Fade */}
+            <img
+                src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop"
+                alt="Luxury Background"
+                className="w-full h-full object-cover opacity-60 scale-105 animate-pulse-slow"
+            />
+        </div>
 
-        {/* Spotlight Effect */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-blue-900/10 to-transparent blur-3xl opacity-30"></div>
-
-        <AnimatedSection className="relative z-10 max-w-5xl mx-auto text-center">
-            <div className="inline-block mb-6 px-4 py-1.5 rounded-full border border-gold-500/30 bg-gold-500/5 backdrop-blur-md">
-                <span className="text-gold-400 text-[10px] uppercase tracking-[0.3em] font-bold">2026 Edition</span>
+        <AnimatedSection className="relative z-20 max-w-5xl mx-auto text-center">
+            <div className="inline-block mb-6 px-4 py-1.5 rounded-full border border-gold-500/30 bg-gold-500/10 backdrop-blur-md">
+                <span className="text-gold-400 text-[10px] uppercase tracking-[0.3em] font-bold">Editorial Selection</span>
             </div>
 
             <h1 className="text-5xl md:text-8xl font-serif font-bold mb-10 tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-b from-white via-slate-200 to-slate-500 drop-shadow-2xl">
