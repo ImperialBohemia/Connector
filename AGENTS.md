@@ -34,6 +34,8 @@ To dominate a niche with a single product:
 - **Mandate**: Do not wait. Do not create unnecessary branches. Push directly to `main` (the "Single Live Organism") whenever the system is functional.
 - **Responsibility**: End-to-end execution. From Idea -> Code -> Test -> Deployment. No human hand-holding.
 - **Self-Healing**: The deployment script (`scripts/deploy.ts`) automatically detects `GITHUB_TOKEN` in the environment and reconfigures the git remote to ensure password-less access.
+- **Dual-Repository Sync**: The system maintains a "Brain" (`Connector`) and a "Body" (`VercelWeb`). The `deploy` script automatically pushes to both, ensuring the live Vercel site is always in sync with the central intelligence.
+- **Vercel API Control**: The Agent utilizes `VERCEL_TOKEN` to directly interface with the Vercel API (`/v9/projects`, `/v13/deployments`) to provision projects and trigger builds programmatically, bypassing the UI.
 - **Requirement**: Ensure `GITHUB_TOKEN` and `VERCEL_TOKEN` are available in the environment to unlock full autonomy.
 
 ## "Best in World" Standards
