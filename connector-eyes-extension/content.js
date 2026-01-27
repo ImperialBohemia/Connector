@@ -19,7 +19,45 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "EXECUTE_ACTION") {
     performAction(message.action, message.params);
   }
+  if (message.type === "GET_DOM") {
+    const map = getSimplifiedDOM();
+    sendResponse(map);
+  }
 });
+
+function getSimplifiedDOM() {
+  const interactables = document.querySelectorAll('a, button, input, textarea, select, [role="button"], [role="link"]');
+  const items = [];
+
+  interactables.forEach((el) => {
+    // Skip invisible elements
+    if (el.offsetParent === null) return;
+
+    const rect = el.getBoundingClientRect();
+    const text = el.innerText || el.placeholder || el.value || el.getAttribute('aria-label') || "";
+
+    // Skip empty non-inputs
+    if (!text.trim() && el.tagName !== 'INPUT' && el.tagName !== 'TEXTAREA') return;
+
+    items.push({
+      tag: el.tagName.toLowerCase(),
+      text: text.slice(0, 50).replace(/\s+/g, ' ').trim(), // Truncate
+      id: el.id,
+      x: Math.round(rect.x),
+      y: Math.round(rect.y),
+      w: Math.round(rect.width),
+      h: Math.round(rect.height)
+    });
+  });
+
+  return {
+    url: window.location.href,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    title: document.title,
+    elements: items.slice(0, 300) // Limit to 300 elements to save context window
+  };
+}
 
 async function performAction(action, params) {
   console.log("Jules Eyes: Executing", action, params);
