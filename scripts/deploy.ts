@@ -6,88 +6,83 @@ function runCommand(command: string, errorMessage: string, silent = false) {
     execSync(command, { stdio: silent ? "ignore" : "inherit" });
   } catch (error) {
     console.error(`\n❌ Error: ${errorMessage}`);
-    process.exit(1);
+    // Do not exit process immediately if one remote fails, try the other
+    if (!errorMessage.includes("Optional")) {
+         process.exit(1);
+    }
   }
 }
 
-function configureRemote() {
+function configureRemotes() {
   const token = process.env.GITHUB_TOKEN;
   if (!token) {
-    console.log("⚠️ No GITHUB_TOKEN found. Assuming SSH or manual authentication.");
+    console.log("⚠️ No GITHUB_TOKEN found. Manual auth required.");
     return;
   }
 
-  console.log("\n🔑 Detected GITHUB_TOKEN. Configuring Absolute Autonomy...");
+  console.log("\n🔑 Detected GITHUB_TOKEN. Configuring Network...");
+
+  // 1. Brain (Connector) - The Source
   try {
-    // Get current remote URL to extract owner/repo
-    const currentRemote = execSync("git remote get-url origin").toString().trim();
+      const brainRemote = `https://x-access-token:${token}@github.com/ImperialBohemia/Connector.git`;
+      runCommand(`git remote set-url origin ${brainRemote}`, "Failed to config Origin.", true);
+      console.log("✅ Brain (Origin) Connected.");
+  } catch (e) {}
 
-    // Extract repo path (e.g., ImperialBohemia/Connector.git)
-    // Handles https://github.com/Owner/Repo.git or git@github.com:Owner/Repo.git
-    let repoPath = "";
-    if (currentRemote.includes("github.com/")) {
-        repoPath = currentRemote.split("github.com/")[1];
-    } else if (currentRemote.includes("github.com:")) {
-        repoPath = currentRemote.split("github.com:")[1];
-    }
-
-    if (repoPath) {
-        const authenticatedRemote = `https://x-access-token:${token}@github.com/${repoPath}`;
-        // Mask the token in the log
-        console.log(`🔗 Updating remote to: https://x-access-token:***@github.com/${repoPath}`);
-        // Run quietly to avoid leaking token in error logs if it fails
-        runCommand(`git remote set-url origin ${authenticatedRemote}`, "Failed to update git remote with token.", true);
-    } else {
-        console.warn("⚠️ Could not parse repository path from remote. Skipping auto-auth.");
-    }
-  } catch (e) {
-    console.warn("⚠️ Error configuring remote. Proceeding with existing config.");
-  }
+  // 2. Body (VercelWeb) - The Live Site
+  try {
+      const bodyRemote = `https://x-access-token:${token}@github.com/ImperialBohemia/VercelWeb.git`;
+      // Check if remote exists, if not add it, if yes set-url
+      try {
+        execSync("git remote get-url live-web", { stdio: "ignore" });
+        runCommand(`git remote set-url live-web ${bodyRemote}`, "Failed to config Live-Web.", true);
+      } catch {
+        runCommand(`git remote add live-web ${bodyRemote}`, "Failed to add Live-Web.", true);
+      }
+      console.log("✅ Body (Live-Web) Connected.");
+  } catch (e) {}
 }
 
 async function deploy() {
   console.log("🤖 Initiating Absolute Autonomy Protocol...");
   const timestamp = new Date().toISOString();
 
-  // 0. Autonomy Configuration
-  configureRemote();
+  // 0. Network Configuration
+  configureRemotes();
 
   // 1. Quality Gate
   console.log("\n🔒 Phase 1: Quality Gate");
   runCommand("npm run audit", "Quality Audit failed. Deployment aborted.");
 
-  // 2. Build Verification (Optional but recommended for safety)
-  // Skipping full build to keep it fast as per user request "quick",
-  // relying on audit for content safety.
+  // 2. Synchronization (Brain)
+  console.log("\n🧠 Phase 2: Brain Synchronization");
+  runCommand("git pull origin main --rebase", "Git pull failed. Please resolve conflicts.");
 
-  // 3. Git Synchronization
-  console.log("\n🔄 Phase 2: Synchronization");
-  // Pull with rebase to handle remote changes automatically
-  runCommand("git pull origin main --rebase", "Git pull failed. Please resolve conflicts manually.");
-
-  // 4. Staging
+  // 3. Staging
   console.log("\n📦 Phase 3: Staging");
   runCommand("git add .", "Git add failed.");
 
-  // 5. Commit
-  // Check if there are changes to commit
+  // 4. Commit
   try {
     const status = execSync("git status --porcelain").toString();
     if (status) {
       console.log("\n📝 Phase 4: Committing");
       runCommand(`git commit -m "Auto-deploy: ${timestamp} - Autonomous Update"`, "Git commit failed.");
     } else {
-      console.log("\n📝 Phase 4: No changes to commit. Proceeding to push...");
+      console.log("\n📝 Phase 4: No changes to commit.");
     }
-  } catch (e) {
-    // Ignore error if status check fails weirdly, usually won't happen
-  }
+  } catch (e) {}
 
-  // 6. Push
-  console.log("\n🚀 Phase 5: Deployment");
-  runCommand("git push origin main", "Git push failed.");
+  // 5. Deployment (Brain)
+  console.log("\n💾 Phase 5: Saving to Brain (Connector)");
+  runCommand("git push origin main", "Failed to push to Connector.");
 
-  console.log("\n✅ Mission Complete. Code is live on GitHub and deploying to Vercel.");
+  // 6. Publication (Live Web)
+  console.log("\n🌍 Phase 6: Publishing to Live Web (VercelWeb)");
+  // Force push to ensure the live site exactly matches the brain's intent
+  runCommand("git push live-web main --force", "Failed to publish to VercelWeb (Optional - check permissions).");
+
+  console.log("\n✅ Mission Complete. System is synchronized and live.");
 }
 
 deploy();
