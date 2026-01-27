@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      margin: 0;
+      padding: 16px;
+      background-color: #f9fafb;
+      color: #111827;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 95vh;
+    }
+    h1 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(to right, #2563eb, #9333ea);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .status {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+    #chat-history {
+      flex: 1;
+      overflow-y: auto;
+      background: white;
+      border-radius: 8px;
+      padding: 12px;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+    .message {
+      margin-bottom: 8px;
+      padding: 8px;
+      border-radius: 6px;
+    }
+    .user {
+      background-color: #eff6ff;
+      color: #1e3a8a;
+      text-align: right;
+    }
+    .agent {
+      background-color: #f3f4f6;
+      color: #374151;
+    }
+    .input-area {
+      display: flex;
+      gap: 8px;
+    }
+    input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      outline: none;
+      font-size: 14px;
+    }
+    input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    .settings {
+      margin-bottom: 12px;
+      padding: 8px;
+      background: #f0fdf4;
+      border-radius: 6px;
+      border: 1px solid #bbf7d0;
+    }
+    .settings input {
+      width: 90%;
+      margin-top: 4px;
+    }
+    .settings label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #166534;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Connector Eyes 👁️</h1>
+    <div class="status">Ready to work. RAM Optimized.</div>
+
+    <div class="settings">
+      <label for="apikey">OpenAI API Key (Stored Locally):</label>
+      <input type="password" id="apikey" placeholder="sk-...">
+    </div>
+
+    <div id="chat-history">
+      <div class="message agent">Hello! I am Jules. I can see your browser. What should I do?</div>
+    </div>
+
+    <div class="input-area">
+      <input type="text" id="user-input" placeholder="e.g., 'Write a Medium article here...'" autocomplete="off">
+      <button id="send-btn">Send</button>
+    </div>
+  </div>
+  <script src="sidepanel.js"></script>
+</body>
+</html>
