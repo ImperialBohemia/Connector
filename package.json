@@ -6,12 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "audit": "tsx scripts/quality-audit.ts",
+    "indexnow": "tsx scripts/submit-indexnow.ts"
   },
   "dependencies": {
-    "dotenv": "^17.2.3",
-    "google-auth-library": "^10.5.0",
-    "google-spreadsheet": "^5.0.2",
+    "dotenv": "^16.4.1",
+    "google-auth-library": "^9.6.3",
+    "google-spreadsheet": "^4.1.1",
     "lucide-react": "^0.330.0",
     "next": "14.1.0",
     "react": "^18",
@@ -24,6 +26,7 @@
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
+    "tsx": "^4.7.1",
     "typescript": "^5"
   }
 }

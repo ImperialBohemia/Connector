@@ -110,7 +110,7 @@ function PricingTable({ products }: { products: ProductData[] }) {
             href={product.link || "#"}
             className={`w-full py-4 px-6 rounded-md font-bold text-center transition-all shadow-sm ${
               product.isBestValue
-                ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md hover:scale-105 transform duration-200'
+                ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:scale-105 transform duration-200 animate-pulse-slow ring-4 ring-blue-600/20'
                 : 'bg-slate-100 text-slate-800 hover:bg-slate-200'
             }`}
           >
@@ -298,13 +298,13 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
 
-      {/* Hero Section */}
-      <section className="w-full bg-slate-900 text-white pt-24 pb-12 px-4 text-center">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
+      {/* Hero Section with Premium Gradient */}
+      <section className="w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white pt-24 pb-12 px-4 text-center border-b border-slate-700">
+        <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight drop-shadow-sm">
           {page.title}
         </h1>
         <TrustSignals />
-        <p className="text-xl text-slate-300 max-w-2xl mx-auto font-light">
+        <p className="text-xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
           {page.intro_text}
         </p>
       </section>
