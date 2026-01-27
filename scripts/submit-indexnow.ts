@@ -1,13 +1,14 @@
 import 'dotenv/config';
 import { getSheetData } from '../lib/sheets';
+import { siteConfig } from '../lib/config';
+
 // Note: In a real script we might need to use a fetch polyfill or node-fetch if using older Node,
 // but Next.js environment usually handles fetch.
 // Since this is a standalone script, we rely on Node 18+ native fetch.
 
 const BING_API_ENDPOINT = 'https://api.indexnow.org/indexnow';
-const HOST = 'connector-app-flame.vercel.app'; // Defined in memory
-const KEY_LOCATION = `https://${HOST}/key.txt`; // Assuming key is named key.txt or similar
-
+// Extract hostname from URL
+const HOST = new URL(siteConfig.url).host;
 async function submitToIndexNow() {
   const key = process.env.INDEXNOW_KEY;
   if (!key) {
@@ -26,7 +27,7 @@ async function submitToIndexNow() {
   const payload = {
     host: HOST,
     key: key,
-    keyLocation: `https://${HOST}/${key}.txt`, // Matching the route logic in app/[filename]
+    keyLocation: `${siteConfig.url}/${key}.txt`,
     urlList: urlList
   };
 

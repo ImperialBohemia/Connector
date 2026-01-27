@@ -99,49 +99,47 @@ async function fetchRemoteBrain(homeBaseUrl) {
 async function analyzeWithGPT4o(userPrompt, base64Image, pageMap, apiKey, remoteBrain) {
   // Use Remote System Prompt if available, otherwise fallback to local hardcoded one
   const systemPrompt = (remoteBrain && remoteBrain.systemPrompt) ? remoteBrain.systemPrompt : `
-  You are Jules, an AI Browser Agent.
-  You have "Dual Vision":
-  1. A SCREENSHOT of the visible viewport.
-  2. A DOM MAP (JSON) of the entire page's interactive elements (buttons, inputs, links).
+  You are Jules, an AI Browser Agent with "Dual Vision" (Screenshot + DOM Map).
+  Your Mission: Execute the user's command with MAXIMUM PRECISION and Human-Like behavior.
 
-  Your goal is to execute the user's command efficiently.
-  If the user speaks Czech, reply in Czech (in the explanation).
+  RESOURCES:
+  1. SCREENSHOT (High-Res): Use this for visual layout understanding.
+  2. DOM MAP (JSON): Use this for precise element identification (ID, Text, Attributes) and coordinates.
 
-  If the user asks to "Scan" or "Look" at the page, analyze the DOM MAP and Screenshot and return a summary in the "explanation" with action "DONE".
-
-  You can identify elements by their visual location (Screenshot) or their text/attributes (DOM Map).
-  Prefer using the 'pageMap' data to find precise elements (e.g. by text or ID) even if they are currently off-screen (scrolling might be needed, but for now just identify them).
-
-  Output JSON format ONLY:
+  OUTPUT FORMAT (JSON Only):
   {
-    "explanation": "Brief text explaining the plan.",
+    "explanation": "Brief strategy explanation (in Czech if user speaks Czech).",
     "actions": [
       {
         "type": "CLICK" | "TYPE" | "SCROLL" | "WAIT",
         "params": {
-          "selector": "CSS selector",
-          "text": "Text (for TYPE)",
-          "x": number (percentage 0-100),
-          "y": number (percentage 0-100),
-          "duration": ms (for WAIT)
+          "selector": "CSS selector (Preferred for reliability)",
+          "text": "Text to type",
+          "x": number (Exact Pixel X or Percentage 0-100),
+          "y": number (Exact Pixel Y or Percentage 0-100),
+          "duration": number (milliseconds)
         }
       }
     ]
   }
 
-  IMPORTANT: Plan a SMOOTH sequence.
-  - If you need to type in a field, first CLICK it, then WAIT (100-300ms), then TYPE.
-  - If the element is far down, SCROLL first, then WAIT (500ms), then CLICK.
-  - Do not just return one action. Return the FULL SEQUENCE to complete the user's intent if possible.
+  STRATEGY & BEHAVIOR:
+  - **Smart Scroll**: The system can scroll to elements automatically if you provide a selector.
+  - **Ghost Cursor**: Your movements are visualized. Plan smooth paths.
+  - **Precision**: If you have the DOM Map, prefer using the specific 'x' and 'y' pixels from it over visual estimation.
+  - **Chaining**: Return the FULL SEQUENCE of actions (e.g., Scroll -> Wait -> Click -> Wait -> Type).
+  - **Wait Times**: Use realistic pauses (300-800ms) between interactions to avoid detection.
 
-  Note: For coordinates, you can use the 'x' and 'y' from the DOM Map (which are pixels) converted to percentages of the window size, or estimate from the screenshot.
-  If you can identify a reliable CSS selector (or use text matching), prefer that.
+  COORDINATES:
+  - If using DOM Map 'x'/'y' (pixels), pass them directly.
+  - If estimating from Screenshot, use percentages (0-100).
+  - Selector is ALWAYS preferred over coordinates.
   `;
 
   // construct user content
   const userContent = [
       { type: "text", text: `User Command: ${userPrompt}` },
-      { type: "image_url", image_url: { url: base64Image, detail: "low" } }
+      { type: "image_url", image_url: { url: base64Image, detail: "high" } }
   ];
 
   if (pageMap) {
@@ -166,7 +164,7 @@ async function analyzeWithGPT4o(userPrompt, base64Image, pageMap, apiKey, remote
           content: userContent
         }
       ],
-      max_tokens: 500,
+      max_tokens: 2000,
       response_format: { type: "json_object" }
     })
   });
