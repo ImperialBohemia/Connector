@@ -20,7 +20,9 @@ export interface PageData {
 }
 
 // Mock data for development or fallback
+// EXPANDED: "First Web" Complete Intent Clusters (5 Pages)
 const MOCK_DATA: PageData[] = [
+  // 1. Commercial (The "Money" Page)
   {
     slug: "best-wireless-headphones-2026",
     keyword: "Best Wireless Headphones",
@@ -50,6 +52,121 @@ const MOCK_DATA: PageData[] = [
       }
     ]
   },
+  // 2. Transactional (The "Deal" Page)
+  {
+    slug: "sony-wh-1000xm5-discount-code",
+    keyword: "Sony WH-1000XM5 Discount",
+    title: "Sony WH-1000XM5 Discount Code & Best Price (Verified 2026)",
+    description: "Looking for the best deal on Sony WH-1000XM5? We track price drops, coupons, and student discounts daily.",
+    intro_text: "Don't pay full price. The Sony WH-1000XM5 often sees flash sales and hidden discounts. We've aggregated the current best live offers to help you save up to 20% instantly.",
+    affiliate_link: "https://amazon.com/sony-xm5-deal",
+    products: [
+      {
+        name: "Amazon Renewed",
+        price: "$279.00",
+        features: ["Certified Refurbished", "90-Day Guarantee", "Like New Condition"],
+        link: "https://amazon.com/sony-xm5-renewed"
+      },
+      {
+        name: "Sony WH-1000XM5 (New)",
+        price: "$348.00",
+        features: ["Full Warranty", "Brand New", "Best Value Deal"],
+        isBestValue: true,
+        link: "https://amazon.com/sony-xm5"
+      },
+      {
+        name: "Bundle Deal",
+        price: "$398.00",
+        features: ["Includes Power Bank", "Hard Case", "Extended Warranty"],
+        link: "https://amazon.com/sony-xm5-bundle"
+      }
+    ]
+  },
+  // 3. Comparative (The "Versus" Page)
+  {
+    slug: "sony-wh-1000xm5-vs-bose-quietcomfort-45",
+    keyword: "Sony WH-1000XM5 vs Bose QC45",
+    title: "Sony WH-1000XM5 vs Bose QuietComfort 45: Which is Better in 2026?",
+    description: "A detailed head-to-head comparison of the two noise-cancelling giants. We analyze sound, comfort, and battery life.",
+    intro_text: "It's the ultimate battle: Sony's tech-heavy flagship versus Bose's legendary comfort. We spent 50 hours with both headphones to help you decide which one deserves your money.",
+    affiliate_link: "https://amazon.com/sony-vs-bose",
+    products: [
+      {
+        name: "Bose QuietComfort 45",
+        price: "$329.00",
+        features: ["Supreme Comfort", "Physical Buttons", "Classic Design", "Foldable"],
+        link: "https://amazon.com/bose-qc45"
+      },
+      {
+        name: "Sony WH-1000XM5",
+        price: "$348.00",
+        features: ["Better ANC", "Smart Features", "Longer Battery", "Modern Look"],
+        isBestValue: true,
+        link: "https://amazon.com/sony-xm5"
+      }
+    ]
+  },
+  // 4. Informational (The "Guide" Page)
+  {
+    slug: "wireless-headphones-buying-guide-beginners",
+    keyword: "Wireless Headphones Guide",
+    title: "How to Choose Wireless Headphones: A Beginner's Guide (2026)",
+    description: "Confused by codecs, drivers, and ANC? We explain everything you need to know before buying wireless headphones.",
+    intro_text: "Active Noise Cancellation. LDAC. Multipoint Connection. The jargon can be overwhelming. This guide breaks down exactly what features matter for your lifestyle and budget.",
+    affiliate_link: "https://amazon.com/headphones-guide",
+    products: [
+      {
+        name: "Budget Choice",
+        price: "$50-$100",
+        features: ["Basic ANC", "Standard Audio", "Good for Commute"],
+        link: "https://amazon.com/budget-headphones"
+      },
+      {
+        name: "Sweet Spot (Best Value)",
+        price: "$200-$350",
+        features: ["Premium ANC", "App Support", "All-Day Comfort"],
+        isBestValue: true,
+        link: "https://amazon.com/best-value-headphones"
+      },
+      {
+        name: "Audiophile Tier",
+        price: "$500+",
+        features: ["Lossless Audio", "Exotic Materials", "Studio Quality"],
+        link: "https://amazon.com/audiophile-headphones"
+      }
+    ]
+  },
+  // 5. Alternative (The "Competitor" Page)
+  {
+    slug: "top-alternatives-to-sony-wh-1000xm5",
+    keyword: "Sony WH-1000XM5 Alternatives",
+    title: "Top 5 Alternatives to Sony WH-1000XM5 (Cheaper & Better Options)",
+    description: "Love the Sony XM5 but hate the price? Here are the best alternatives that deliver similar performance for less.",
+    intro_text: "The Sony WH-1000XM5 is great, but it's not the only game in town. Whether you want more bass, a cheaper price tag, or a more premium build, these 5 alternatives might be a better fit for you.",
+    affiliate_link: "https://amazon.com/sony-alternatives",
+    products: [
+      {
+        name: "Sennheiser Momentum 4",
+        price: "$299.00",
+        features: ["60-Hour Battery", "Superior Sound", "Fabric Design"],
+        link: "https://amazon.com/sennheiser-m4"
+      },
+      {
+        name: "Sony WH-1000XM4",
+        price: "$248.00",
+        features: ["Foldable Design", "Similar ANC", "Lower Price"],
+        isBestValue: true,
+        link: "https://amazon.com/sony-xm4"
+      },
+      {
+        name: "Bowers & Wilkins Px7 S2",
+        price: "$399.00",
+        features: ["Luxury Build", "Dynamic Drivers", "Stylish Look"],
+        link: "https://amazon.com/bw-px7"
+      }
+    ]
+  },
+  // Example Regional Page (Kept for reference)
   {
     slug: "crm-for-real-estate-agents-in-brno",
     keyword: "CRM pro makléře Brno",
