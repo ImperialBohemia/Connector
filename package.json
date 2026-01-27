@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "audit": "tsx scripts/quality-audit.ts",
+    "index:update": "tsx scripts/update-master-index.ts",
     "deploy": "tsx scripts/deploy.ts",
     "indexnow": "tsx scripts/submit-indexnow.ts"
   },

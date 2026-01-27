@@ -65,6 +65,10 @@ async function deploy() {
   // Pull with rebase to handle remote changes automatically
   runCommand("git pull origin main --rebase", "Git pull failed. Please resolve conflicts manually.");
 
+  // 3.5 Knowledge Update
+  console.log("\n🧠 Phase 2.5: Updating Master Index");
+  runCommand("npm run index:update", "Master Index update failed.");
+
   // 4. Staging
   console.log("\n📦 Phase 3: Staging");
   runCommand("git add .", "Git add failed.");
