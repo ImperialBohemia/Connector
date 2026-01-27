@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "audit": "tsx scripts/quality-audit.ts",
+    "deploy": "tsx scripts/deploy.ts",
     "indexnow": "tsx scripts/submit-indexnow.ts"
   },
   "dependencies": {
