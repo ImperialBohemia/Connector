@@ -82,7 +82,7 @@ function getSimplifiedDOM() {
     height: window.innerHeight,
     docHeight: document.documentElement.scrollHeight,
     title: document.title,
-    elements: items.slice(0, 500) // Limit increased slightly
+    elements: items.slice(0, 1500) // Limit increased for Maximum Precision
   };
 }
 
@@ -93,7 +93,6 @@ async function performAction(action, params) {
   cursor.style.display = 'block';
 
   let targetElement = null;
-  let useScroll = false;
 
   // 1. Try to find element by ID/Selector
   if (params.selector) {
@@ -103,35 +102,63 @@ async function performAction(action, params) {
   }
 
   // 2. Determine target coordinates
-  // If params has direct X/Y (from Map reasoning), use them as percentage base if sent that way,
-  // but if they are pixels from our DOM map logic, we need to be careful.
-  // The system prompt says params.x is percentage 0-100.
+  // LOGIC: If X/Y are small (< 1 or <= 100 AND intended as %), treat as percentage.
+  // If X/Y are large (> 100), treat as absolute pixels from DOM Map.
+  // To be robust: Check against window dimensions.
 
-  let targetX = (params.x / 100) * window.innerWidth;
-  let targetY = (params.y / 100) * window.innerHeight;
+  let targetX = 0;
+  let targetY = 0;
+
+  if (params.x !== undefined && params.y !== undefined) {
+      // Heuristic: If x > 100, it's likely pixels (unless screen is tiny, but standard desktop is > 1000px width)
+      if (params.x > 100 || params.y > 100) {
+          // Absolute Pixels (Global Page Coordinates likely, need to subtract scroll for clientX/Y?)
+          // Wait, getSimplifiedDOM returns Absolute Page X/Y (rect.x + scrollX).
+          // And click needs Client X/Y (relative to viewport).
+          // But our moveCursorHuman uses fixed positioning, which relates to viewport?
+          // cursor.style.position = 'fixed'. So we need Viewport Coordinates.
+
+          // If params come from DOM Map, they are Absolute.
+          // We need to convert Absolute -> Viewport.
+          targetX = params.x - window.scrollX;
+          targetY = params.y - window.scrollY;
+      } else {
+          // Percentage (0-100)
+          targetX = (params.x / 100) * window.innerWidth;
+          targetY = (params.y / 100) * window.innerHeight;
+      }
+  }
 
   // SMART SCROLL:
   // Prioritize Element Scrolling
   if (targetElement) {
       if (!isElementInViewport(targetElement)) {
+          console.log("Jules: Element off-screen, scrolling...", targetElement);
           targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
           await new Promise(r => setTimeout(r, 800)); // Wait for scroll
       }
 
-      // Re-calculate coordinates after scroll
+      // Re-calculate coordinates after scroll (Viewport Coordinates)
       const rect = targetElement.getBoundingClientRect();
       targetX = rect.left + rect.width / 2;
       targetY = rect.top + rect.height / 2;
   }
-  else if (params.y > 100) {
-      // Fallback: If no element found but Y > 100%, treat as Percentage of Document Height (rare fallback)
-      // This allows blind scrolling to "bottom of page" (Y=100%) or specific sections
-      const scrollY = (params.y / 100) * document.documentElement.scrollHeight - (window.innerHeight / 2);
-      window.scrollTo({ top: Math.max(0, scrollY), behavior: 'smooth' });
-      await new Promise(r => setTimeout(r, 800));
+  else {
+      // If we only have coordinates and they are off-screen?
+      // Check if targetY is outside viewport (0 to window.innerHeight)
+      if (targetY < 0 || targetY > window.innerHeight) {
+          console.log("Jules: Coordinate off-screen, scrolling...");
+          // Scroll so that targetY becomes centered
+          const currentScrollY = window.scrollY;
+          // Absolute Target Y = currentScrollY + targetY
+          const absoluteTargetY = currentScrollY + targetY;
 
-      // After blind scroll, assume interaction is at center of viewport
-      targetY = window.innerHeight / 2;
+          window.scrollTo({ top: absoluteTargetY - (window.innerHeight / 2), behavior: 'smooth' });
+          await new Promise(r => setTimeout(r, 800));
+
+          // Update targetY to be center of viewport now
+          targetY = window.innerHeight / 2;
+      }
   }
 
   // 1. Move Cursor Smoothly (Human-like)

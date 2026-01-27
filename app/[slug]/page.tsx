@@ -3,6 +3,7 @@ import { getSafeLinkProps } from "@/lib/utils";
 import { Check, Info, Calendar, User, Trophy, Tag, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { siteConfig } from "@/lib/config";
 
 // Force static generation for these routes
 export const dynamicParams = false;
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
 
-  const baseUrl = "https://connector-app-flame.vercel.app";
+  const baseUrl = siteConfig.url;
   const ogImage = `https://via.placeholder.com/1200x630.png?text=${encodeURIComponent(page.title)}`;
 
   return {
@@ -236,7 +237,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     notFound();
   }
 
-  const baseUrl = "https://connector-app-flame.vercel.app";
+  const baseUrl = siteConfig.url;
 
   // Dynamic Price Validity (1 year from now) for Deal Schema
   const validUntil = new Date();
