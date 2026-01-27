@@ -23,6 +23,11 @@ export function hexToRgb(hex: string): string {
  * Enforces 'nofollow sponsored' for all external/affiliate links.
  */
 export function getSafeLinkProps(url: string) {
+  // Prevent XSS from javascript: links
+  if (url.trim().toLowerCase().startsWith("javascript:")) {
+    return { href: "#" };
+  }
+
   const isExternal = url.startsWith("http") || url.startsWith("//");
 
   if (isExternal) {

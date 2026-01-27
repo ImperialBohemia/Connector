@@ -1,4 +1,5 @@
 import { getSheetData, PageData, ProductData } from "@/lib/sheets";
+import { getSafeLinkProps } from "@/lib/utils";
 import { Check, Info, Calendar, User, Trophy, Tag, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -107,7 +108,7 @@ function PricingTable({ products }: { products: ProductData[] }) {
           </ul>
 
           <a
-            href={product.link || "#"}
+            {...getSafeLinkProps(product.link || "#")}
             className={`w-full py-4 px-6 rounded-md font-bold text-center transition-all shadow-sm ${
               product.isBestValue
                 ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:scale-105 transform duration-200 animate-pulse-slow ring-4 ring-blue-600/20'
@@ -216,7 +217,7 @@ function Verdict({ page }: { page: PageData }) {
         It delivers exceptional value without compromising on key features.
       </p>
       <a
-        href={winner.link || "#"}
+        {...getSafeLinkProps(winner.link || "#")}
         className="inline-flex items-center bg-green-500 text-white font-bold py-4 px-10 rounded-full hover:bg-green-600 transition-transform hover:scale-105 shadow-lg text-lg"
       >
         <Tag className="w-5 h-5 mr-2" />
@@ -346,7 +347,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
               Join thousands of satisfied users who chose our top recommendation.
             </p>
             <a
-              href={page.affiliate_link}
+              {...getSafeLinkProps(page.affiliate_link)}
               className="inline-block bg-slate-200 text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-slate-300 transition"
             >
               Check Official Site
