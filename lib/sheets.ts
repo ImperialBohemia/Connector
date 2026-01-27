@@ -54,7 +54,7 @@ const MOCK_DATA: PageData[] = [
     slug: "crm-for-real-estate-agents-in-brno",
     keyword: "CRM pro makléře Brno",
     title: "Best CRM for Real Estate Agents in Brno (2026 Review)",
-    description: "Compare the top CRM systems for real estate professionals in Brno.",
+    description: "Compare the top CRM systems for real estate professionals in Brno. We analyze features, pricing, and localization to help you choose the best platform for 2026.",
     intro_text: "If you are working in real estate in Brno, you need a CRM that handles local nuances. We compared the top local and international providers to find the perfect match for independent agents and large brokerages.",
     affiliate_link: "https://example.com/affiliate",
     products: [

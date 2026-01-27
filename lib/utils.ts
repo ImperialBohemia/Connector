@@ -10,3 +10,24 @@ export function hexToRgb(hex: string): string {
     `${parseInt(result[1], 16)} ${parseInt(result[2], 16)} ${parseInt(result[3], 16)}`
     : "0 0 0";
 }
+
+/**
+ * Returns safe HTML attributes for links to ensure strict SEO compliance and security.
+ * Enforces 'nofollow sponsored' for all external/affiliate links.
+ */
+export function getSafeLinkProps(url: string) {
+  const isExternal = url.startsWith("http") || url.startsWith("//");
+
+  if (isExternal) {
+    return {
+      href: url,
+      target: "_blank",
+      rel: "nofollow sponsored noopener noreferrer"
+    };
+  }
+
+  return {
+    href: url,
+    // Internal links don't need specific rel/target
+  };
+}

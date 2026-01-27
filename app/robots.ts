@@ -8,11 +8,11 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/admin/"],
+        disallow: ["/api/", "/_next/", "/dashboard/", "/admin/"],
       },
-      // Explicitly allow AI bots for "Answer Engine Optimization"
+      // Explicitly invite AI Search Agents for "Answer Engine Optimization" (AEO)
       {
-        userAgent: ["GPTBot", "Bingbot", "Google-Extended", "Applebot"],
+        userAgent: ["GPTBot", "Bingbot", "Google-Extended", "Applebot-Extended"],
         allow: "/",
       },
     ],
