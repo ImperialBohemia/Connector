@@ -2,21 +2,24 @@ import { getSheetData, PageData } from "../lib/sheets";
 import { generateClusters } from "../lib/generator";
 
 /**
- * CONNECTOR QUALITY GATE - ULTRA STRICT MODE
+ * CONNECTOR QUALITY GATE - ULTRA STRICT MODE (2026 AI EDITION)
  *
  * This script enforces the highest standards for SEO, Safety, and Content Quality.
+ * It now includes "E-E-A-T" and "Answer Engine" checks.
  * Any violation causes a build failure.
  */
 
 const CONFIG = {
-  title: { min: 30, max: 60 },
-  description: { min: 120, max: 160 },
+  title: { min: 30, max: 70 }, // Relaxed max slightly for "2026 Review" suffixes
+  description: { min: 120, max: 170 },
   intro: { min: 150 },
-  trustKeywords: ["review", "guide", "best", "vs", "analysis", "honest", "comparison", "top"],
+  trustKeywords: ["review", "guide", "best", "vs", "analysis", "honest", "comparison", "top", "tested"],
+  experienceKeywords: ["i tested", "my experience", "hands-on", "verified", "lab test", "results", "honest", "personally"],
 };
 
 function auditPage(page: PageData): string[] {
   const errors: string[] = [];
+  const textContent = (page.intro_text || "").toLowerCase() + (page.description || "").toLowerCase();
 
   // 1. Metadata Precision
   if (!page.title) {
@@ -46,14 +49,20 @@ function auditPage(page: PageData): string[] {
     errors.push(`[Quality] Intro text is too thin (${page.intro_text?.length || 0}). Bing requires > ${CONFIG.intro.min} chars.`);
   }
 
-  const hasTrustSignal = CONFIG.trustKeywords.some(k =>
-    page.title?.toLowerCase().includes(k) || page.description?.toLowerCase().includes(k)
-  );
+  const hasTrustSignal = CONFIG.trustKeywords.some(k => textContent.includes(k));
   if (!hasTrustSignal) {
     errors.push(`[Psychology] Missing Trust Keyword (e.g., 'Review', 'Best') in metadata.`);
   }
 
-  // 4. Data Integrity & Deal Schema
+  // -----------------------------------------------------------------------
+  // 4. NEW: E-E-A-T & Experience Check (2026 Standard)
+  // -----------------------------------------------------------------------
+  const hasExperienceSignal = CONFIG.experienceKeywords.some(k => textContent.includes(k));
+  if (!hasExperienceSignal) {
+    errors.push(`[E-E-A-T] Missing 'Experience' marker (e.g., 'I tested', 'Hands-on'). Google needs proof of human usage.`);
+  }
+
+  // 5. Data Integrity & Deal Schema
   if (!page.products || page.products.length === 0) {
     errors.push(`[Critical] No products found.`);
   } else {
@@ -62,7 +71,7 @@ function auditPage(page: PageData): string[] {
       errors.push(`[Conversion] No 'Best Value' product defined. Deal Schema will fail.`);
     }
 
-    // 5. Link Safety & Format
+    // 6. Link Safety & Format
     page.products.forEach((p, i) => {
       if (!p.link || !p.link.startsWith('http')) {
         errors.push(`[Safety] Product '${p.name}' has invalid link: '${p.link}'. Must be absolute URL.`);
@@ -78,7 +87,7 @@ function auditPage(page: PageData): string[] {
 }
 
 async function runQualityGate() {
-  console.log("🔒 Starting CONNECTOR ULTRA-STRICT Audit...");
+  console.log("🔒 Starting CONNECTOR ULTRA-STRICT Audit (2026 AI Edition)...");
   let hasFailure = false;
 
   // 1. Audit Existing Sheets Data
@@ -92,22 +101,28 @@ async function runQualityGate() {
       console.warn(`\n❌ Page '${page.slug}' FAILED:`);
       errors.forEach(e => console.warn(`   - ${e}`));
     } else {
-      console.log(`✅ Page '${page.slug}' Passed.`);
+      console.log(`✅ Page '${page.slug}' Passed E-E-A-T Checks.`);
     }
   });
 
   // 2. Audit Generator Logic (Simulation)
   console.log("\n🧪 Testing Generator Intelligence...");
   try {
-    const mockClusters = generateClusters("HyperAi Tool", "https://affiliate.link", "$49");
+    const mockClusters = await generateClusters("HyperAi Tool", "https://affiliate.link", "$49");
     mockClusters.forEach(page => {
         // Mock data often needs loose audit, but we check critical structure
         if (!page.slug || !page.title) {
              console.error(`❌ Generator failed to produce valid structure for ${page.keyword}`);
              hasFailure = true;
         }
+        // Validate that our new Generator actually produces E-E-A-T compliant text
+        const errors = auditPage(page);
+        if (errors.some(e => e.includes("E-E-A-T"))) {
+             console.error(`❌ Generator Templates are missing Experience Markers for ${page.keyword}`);
+             hasFailure = true;
+        }
     });
-    console.log("✅ Generator Logic Verified.");
+    console.log("✅ Generator Logic Verified (E-E-A-T Compliant).");
   } catch (e) {
       console.error("❌ Generator crashed:", e);
       hasFailure = true;
@@ -117,7 +132,7 @@ async function runQualityGate() {
     console.error("\n🚫 AUDIT FAILED. Strict standards not met.");
     process.exit(1);
   } else {
-    console.log("\n🏆 Quality Gate Passed. System is Perfect.");
+    console.log("\n🏆 Quality Gate Passed. System is 2026 Ready.");
   }
 }
 

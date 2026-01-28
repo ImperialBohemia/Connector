@@ -5,8 +5,8 @@ import Link from 'next/link';
 export function Header() {
   return (
     <>
-      {/* Top Bar Compliance */}
-      <div className="bg-black text-slate-500 text-[10px] md:text-xs py-2 text-center border-b border-white/5 tracking-widest uppercase font-medium">
+      {/* Top Bar Compliance (FTC "Conspicuous" Standard) */}
+      <div className="bg-black text-slate-400 text-xs py-2 text-center border-b border-white/5 tracking-wider font-medium">
         <p>
           <span className="text-gold-500 mr-2">✦</span>
           {siteConfig.name} is reader-supported. We may earn a commission if you buy through our links.
@@ -25,7 +25,7 @@ export function Header() {
           <nav>
             <ul className="flex space-x-8 text-sm font-medium text-slate-400">
               <li><Link href="/" className="hover:text-gold-400 transition-colors uppercase tracking-widest text-xs">Top Picks</Link></li>
-              <li><Link href="/guides" className="hover:text-gold-400 transition-colors uppercase tracking-widest text-xs">Journal</Link></li>
+              <li><Link href="/guides" className="hover:text-gold-400 transition-colors uppercase tracking-widest text-xs">Methodology</Link></li>
               <li><Link href="/about" className="hover:text-gold-400 transition-colors uppercase tracking-widest text-xs">About AI</Link></li>
             </ul>
           </nav>

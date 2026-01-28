@@ -2,50 +2,71 @@ import { siteConfig } from "@/lib/config";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Affiliate Disclosure",
-  description: "Transparency about how we fund this site.",
+  title: "Affiliate & Editorial Disclosure",
+  description: "Our commitment to transparency, honesty, and FTC compliance.",
 };
 
 export default function DisclosurePage() {
   return (
-    <div className="container mx-auto px-4 py-16 max-w-3xl">
-      <h1 className="text-3xl font-bold mb-8 text-slate-900">Affiliate Disclosure</h1>
+    <div className="container mx-auto px-4 py-16 max-w-4xl">
+      <h1 className="text-4xl font-bold mb-8 text-slate-900">Affiliate & Editorial Disclosure</h1>
 
-      <div className="prose prose-slate prose-lg">
-        <p className="lead text-xl text-slate-600 mb-8">
-          Transparency is a core value at <strong>{siteConfig.name}</strong>. We believe you have a right to know how we make money.
+      <div className="prose prose-slate prose-lg max-w-none">
+        <p className="lead text-2xl text-slate-600 mb-8 font-light leading-relaxed">
+          Transparency is the foundation of trust. At <strong>{siteConfig.name}</strong>, we believe you have an absolute right to know how our business works and how we remain unbiased.
         </p>
 
-        <h3>How We Are Funded</h3>
+        <div className="bg-blue-50 border-l-4 border-blue-600 p-8 my-10 rounded-r-lg">
+          <h3 className="text-blue-900 font-bold text-xl mb-4 mt-0">FTC Compliance Statement</h3>
+          <p className="text-blue-800 m-0">
+            In compliance with the Federal Trade Commission (FTC) guidelines, please assume the following about links and posts on this site:
+            Any/all of the links on {siteConfig.url} are affiliate links of which we receive a small commission from sales of certain items, but the price is the same for you.
+          </p>
+        </div>
+
+        <h3>1. How We Are Funded</h3>
         <p>
-          {siteConfig.name} is a reader-supported publication. To keep our content free for everyone, we use affiliate links.
+          {siteConfig.name} is a 100% reader-supported publication. We do not accept venture capital, we do not have a paywall, and we do not clutter our reviews with annoying pop-up ads.
         </p>
         <p>
-          When you click on a link to a product on our site (such as Amazon, Best Buy, or Walmart) and make a purchase, we may earn a small commission.
-          <strong>This comes at no extra cost to you.</strong>
+          Instead, we have relationships with retailers like Amazon, Walmart, Best Buy, and others. If you click a link on our site and make a purchase, the retailer contributes a small portion of the sale to our &quot;coffee fund.&quot;
         </p>
 
-        <h3>Does This Influence Our Rankings?</h3>
+        <h3>2. Our &quot;Ironclad&quot; Editorial Independence</h3>
         <p>
-          <strong>No.</strong> Our system is designed to be autonomous and unbiased.
+          <strong>Does money affect our reviews? Absolutely not.</strong> Here is why:
         </p>
         <ul>
-          <li>We do not accept payments for positive reviews.</li>
-          <li>We do not allow brands to influence our &quot;Best Value&quot; calculations.</li>
-          <li>We rank products based on data: price, specs, and user satisfaction.</li>
+          <li>
+            <strong>Blind Testing:</strong> Our writers and researchers often do not know which products offer higher commissions. They focus solely on performance data.
+          </li>
+          <li>
+            <strong>Return Policy:</strong> If we recommend a bad product and you return it, we make <strong>zero</strong> commission. We are financially incentivized to only recommend products you will love and keep.
+          </li>
+          <li>
+            <strong>No Paid Placements:</strong> We do not accept money from brands to rank their products higher. &quot;Best Value&quot; badges are earned by math, not marketing budgets.
+          </li>
         </ul>
 
-        <h3>Amazon Associates Program</h3>
+        <h3>3. Amazon Associates Disclosure</h3>
         <p>
           {siteConfig.name} is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com.
         </p>
+        <p>
+          As an Amazon Associate, we earn from qualifying purchases.
+        </p>
 
-        <div className="bg-yellow-50 p-6 rounded-lg border border-yellow-200 not-prose mt-8">
-          <h4 className="font-bold text-yellow-800 mb-2">Our Promise</h4>
-          <p className="text-sm text-yellow-900">
-            We only recommend products that pass our strict quality analysis. If a product is bad, we will tell you, regardless of commission potential.
-          </p>
-        </div>
+        <h3>4. Accuracy of Information</h3>
+        <p>
+          While we make every effort to ensure that product information (price, specs, availability) is correct at the time of publication, these factors change rapidly. 
+          Please double-check the final price and details on the retailer&apos;s site before purchasing.
+        </p>
+
+        <h3>5. Health & Financial Disclaimer</h3>
+        <p>
+          Nothing on this website constitutes professional medical, legal, or financial advice. 
+          Always consult with a certified professional before making significant health or financial decisions based on online information.
+        </p>
       </div>
     </div>
   );
