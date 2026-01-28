@@ -82,9 +82,9 @@ const MOCK_DATA: PageData[] = [
 ];
 
 export async function getSheetData(): Promise<PageData[]> {
-  // If credentials are missing, return mock data to prevent build failure
+  // If credentials are missing, return mock data silently to prevent build failure
   if (!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY || !process.env.GOOGLE_SHEET_ID) {
-    console.warn("Missing Google Sheets credentials. Serving mock data.");
+    console.warn("⚠️  Missing Google Sheets credentials. Serving MOCK_DATA (Safe Mode).");
     return MOCK_DATA;
   }
 
@@ -120,7 +120,8 @@ export async function getSheetData(): Promise<PageData[]> {
       };
     });
   } catch (error) {
-    console.error("Error fetching data from Google Sheets:", error);
-    return MOCK_DATA; // Fallback on error
+    console.error("❌ Error fetching data from Google Sheets:", error);
+    console.warn("⚠️  Falling back to MOCK_DATA to ensure build continuity.");
+    return MOCK_DATA; // Fallback on error is critical for Vercel builds
   }
 }
