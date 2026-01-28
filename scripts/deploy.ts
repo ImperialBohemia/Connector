@@ -1,16 +1,29 @@
-import { execSync } from "child_process";
+import { spawn, execSync } from "child_process";
 
-function runCommand(command: string, errorMessage: string, silent = false) {
-  try {
-    if (!silent) console.log(`\n🚀 Running: ${command}`);
-    execSync(command, { stdio: silent ? "ignore" : "inherit" });
-  } catch (error) {
-    console.error(`\n❌ Error: ${errorMessage}`);
-    // Do not exit process immediately if one remote fails, try the other
-    if (!errorMessage.includes("Optional")) {
-         process.exit(1);
-    }
-  }
+// ----------------------------------------------------------------------------
+// UTILITIES
+// ----------------------------------------------------------------------------
+
+async function run(command: string, errorMessage: string, silent = false): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (!silent) console.log(`\n🚀 Executing: ${command}`);
+    const child = spawn(command, { stdio: silent ? "ignore" : "inherit", shell: true });
+
+    child.on("close", (code) => {
+      if (code === 0) {
+        resolve();
+      } else {
+        // Optional commands (like pushing to a remote that might be down) shouldn't crash the flow if handled
+        if (errorMessage.includes("Optional")) {
+          console.warn(`⚠️ Warning: ${errorMessage}`);
+          resolve(); // Resolve anyway for optional steps
+        } else {
+          console.error(`❌ Error: ${errorMessage}`);
+          reject(new Error(errorMessage));
+        }
+      }
+    });
+  });
 }
 
 function configureRemotes() {
@@ -24,65 +37,79 @@ function configureRemotes() {
 
   // 1. Brain (Connector) - The Source
   try {
-      const brainRemote = `https://x-access-token:${token}@github.com/ImperialBohemia/Connector.git`;
-      runCommand(`git remote set-url origin ${brainRemote}`, "Failed to config Origin.", true);
-      console.log("✅ Brain (Origin) Connected.");
-  } catch (e) {}
+    const brainRemote = `https://x-access-token:${token}@github.com/ImperialBohemia/Connector.git`;
+    execSync(`git remote set-url origin ${brainRemote}`, { stdio: 'ignore' });
+    console.log("✅ Brain (Origin) Connected.");
+  } catch (e) {
+    // Ignore if origin doesn't exist yet (unlikely)
+  }
 
   // 2. Body (VercelWeb) - The Live Site
   try {
-      const bodyRemote = `https://x-access-token:${token}@github.com/ImperialBohemia/VercelWeb.git`;
-      // Check if remote exists, if not add it, if yes set-url
-      try {
-        execSync("git remote get-url live-web", { stdio: "ignore" });
-        runCommand(`git remote set-url live-web ${bodyRemote}`, "Failed to config Live-Web.", true);
-      } catch {
-        runCommand(`git remote add live-web ${bodyRemote}`, "Failed to add Live-Web.", true);
-      }
-      console.log("✅ Body (Live-Web) Connected.");
-  } catch (e) {}
+    const bodyRemote = `https://x-access-token:${token}@github.com/ImperialBohemia/VercelWeb.git`;
+    try {
+      execSync("git remote get-url live-web", { stdio: "ignore" });
+      execSync(`git remote set-url live-web ${bodyRemote}`, { stdio: "ignore" });
+    } catch {
+      execSync(`git remote add live-web ${bodyRemote}`, { stdio: "ignore" });
+    }
+    console.log("✅ Body (Live-Web) Connected.");
+  } catch (e) {
+    console.log("⚠️ Could not configure Live-Web remote.");
+  }
 }
 
+// ----------------------------------------------------------------------------
+// DEPLOYMENT LOGIC
+// ----------------------------------------------------------------------------
+
 async function deploy() {
-  console.log("🤖 Initiating Absolute Autonomy Protocol...");
+  console.log("🤖 Initiating Absolute Autonomy Protocol v2.0...");
   const timestamp = new Date().toISOString();
+  const isDryRun = process.argv.includes("--dry-run");
 
-  // 0. Network Configuration
-  configureRemotes();
+  if (isDryRun) console.log("🧪 DRY RUN MODE ENABLED: No changes will be pushed.");
 
-  // 1. Quality Gate
-  console.log("\n🔒 Phase 1: Quality Gate");
-  runCommand("npm run audit", "Quality Audit failed. Deployment aborted.");
-
-  // 2. Synchronization (Brain) - SKIPPED FOR GOLDEN MASTER OVERWRITE
-  console.log("\n🧠 Phase 2: Brain Synchronization - SKIPPED");
-  // runCommand("git pull origin main --rebase", "Git pull failed. Please resolve conflicts.");
-
-  // 3. Staging
-  console.log("\n📦 Phase 3: Staging");
-  runCommand("git add .", "Git add failed.");
-
-  // 4. Commit
   try {
+    // 0. Network Configuration
+    configureRemotes();
+
+    // 1. Quality Gate
+    console.log("\n🔒 Phase 1: Quality Gate");
+    await run("npm run audit", "Quality Audit failed. Deployment aborted.");
+
+    // 2. Staging & Commit
+    console.log("\n📦 Phase 2: Packaging");
+    await run("git add .", "Git add failed.", true);
+
+    // Check for changes
     const status = execSync("git status --porcelain").toString();
     if (status) {
-      console.log("\n📝 Phase 4: Committing");
-      runCommand(`git commit -m "Auto-deploy: ${timestamp} - Autonomous Update"`, "Git commit failed.");
+      console.log("\n📝 Phase 3: Committing Changes");
+      await run(`git commit -m "Auto-deploy: ${timestamp} - Connector v2.0 Update"`, "Git commit failed.");
     } else {
-      console.log("\n📝 Phase 4: No changes to commit.");
+      console.log("\n📝 Phase 3: No changes to commit. Proceeding to synchronization.");
     }
-  } catch (e) {}
 
-  // 5. Deployment (Brain)
-  console.log("\n💾 Phase 5: Saving to Brain (Connector)");
-  runCommand("git push origin HEAD:main --force", "Failed to push to Connector.");
+    if (isDryRun) {
+        console.log("\n🛑 Dry Run Complete. Skipping Push.");
+        return;
+    }
 
-  // 6. Publication (Live Web)
-  console.log("\n🌍 Phase 6: Publishing to Live Web (VercelWeb)");
-  // Force push to ensure the live site exactly matches the brain's intent
-  runCommand("git push live-web HEAD:main --force", "Failed to publish to VercelWeb (Optional - check permissions).");
+    // 4. Parallel Deployment (The Speed Upgrade)
+    console.log("\n🚀 Phase 4: Parallel Deployment (Brain & Body)");
 
-  console.log("\n✅ Mission Complete. System is synchronized and live.");
+    const pushBrain = run("git push origin HEAD:main --force", "Failed to push to Connector (Brain).");
+    const pushBody = run("git push live-web HEAD:main --force", "Failed to publish to VercelWeb (Body/Optional).");
+
+    await Promise.all([pushBrain, pushBody]);
+
+    console.log("\n✅ Mission Complete. Connector v2.0 System Synchronized.");
+
+  } catch (error) {
+    console.error("\n❌ ABORTING: Critical Failure in Deployment Protocol.");
+    process.exit(1);
+  }
 }
 
 deploy();
