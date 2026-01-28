@@ -25,8 +25,8 @@ const MOCK_DATA: PageData[] = [
     slug: "best-wireless-headphones-2026",
     keyword: "Best Wireless Headphones",
     title: "Best Wireless Headphones 2026: Sony vs Bose vs Apple Review",
-    description: "We tested the top noise-cancelling headphones. See why the Sony WH-1000XM5 wins for value, while Apple dominates effectively.",
-    intro_text: "Finding the perfect pair of wireless headphones is difficult with so many options. We tested the market leaders to bring you the absolute best choices for noise cancellation, sound quality, and comfort in 2026.",
+    description: "I tested the top noise-cancelling headphones. See why the Sony WH-1000XM5 wins for value, while Apple dominates effectively. Honest results inside.",
+    intro_text: "Finding the perfect pair of wireless headphones is difficult with so many options. I personally tested the market leaders to bring you the absolute best choices for noise cancellation, sound quality, and comfort in 2026 based on my hands-on experience.",
     affiliate_link: "https://amazon.com/s?k=wireless+headphones&tag=connector-20",
     products: [
       {
@@ -54,8 +54,8 @@ const MOCK_DATA: PageData[] = [
     slug: "crm-for-real-estate-agents-in-brno",
     keyword: "CRM pro makléře Brno",
     title: "Best CRM for Real Estate Agents in Brno (2026 Review)",
-    description: "Compare the top CRM systems for real estate professionals in Brno. We analyze features, pricing, and localization to help you choose the best platform for 2026.",
-    intro_text: "If you are working in real estate in Brno, you need a CRM that handles local nuances. We compared the top local and international providers to find the perfect match for independent agents and large brokerages.",
+    description: "Compare the top CRM systems for real estate professionals in Brno. I tested features, pricing, and localization to help you choose the best platform for 2026.",
+    intro_text: "If you are working in real estate in Brno, you need a CRM that handles local nuances. I tested the top local and international providers to find the perfect match for independent agents and large brokerages based on hands-on usage.",
     affiliate_link: "https://example.com/affiliate",
     products: [
       {

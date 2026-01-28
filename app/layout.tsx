@@ -17,6 +17,13 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  verification: {
+    google: siteConfig.verification.google,
+    yandex: siteConfig.verification.yandex,
+    other: {
+      "msvalidate.01": siteConfig.verification.bing ? [siteConfig.verification.bing] : [],
+    },
+  },
 };
 
 export default function RootLayout({

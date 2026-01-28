@@ -22,6 +22,11 @@ export interface SiteConfig {
   features: {
     cookieConsent: boolean;
   };
+  verification: {
+    google?: string;
+    bing?: string;
+    yandex?: string;
+  };
 }
 
 export const siteConfig: SiteConfig = {
@@ -44,5 +49,9 @@ export const siteConfig: SiteConfig = {
   },
   features: {
     cookieConsent: true,
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
+    bing: process.env.NEXT_PUBLIC_BING_VERIFICATION,
   },
 };
