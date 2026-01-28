@@ -108,7 +108,7 @@ async function runQualityGate() {
   // 2. Audit Generator Logic (Simulation)
   console.log("\n🧪 Testing Generator Intelligence...");
   try {
-    const mockClusters = generateClusters("HyperAi Tool", "https://affiliate.link", "$49");
+    const mockClusters = await generateClusters("HyperAi Tool", "https://affiliate.link", "$49");
     mockClusters.forEach(page => {
         // Mock data often needs loose audit, but we check critical structure
         if (!page.slug || !page.title) {

@@ -12,6 +12,7 @@
     "indexnow": "tsx scripts/submit-indexnow.ts"
   },
   "dependencies": {
+    "cheerio": "^1.2.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.1",
     "framer-motion": "^12.29.2",

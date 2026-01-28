@@ -1,4 +1,5 @@
 import { PageData, ProductData } from "./sheets";
+import { checkKeywordCompetition } from "./bing-research";
 
 // Templates for Long-Tail Keyword Clustering with "Hypnotic" Copy + E-E-A-T (2026 Standards)
 const INTENT_TEMPLATES = [
@@ -34,14 +35,30 @@ const INTENT_TEMPLATES = [
   }
 ];
 
-// The Brain: Generates 5 high-quality pages from 1 Product Input
-export function generateClusters(productName: string, affiliateLink: string, basePrice: string): PageData[] {
+// The Brain: Generates high-quality pages from 1 Product Input with Real-Time Research
+export async function generateClusters(productName: string, affiliateLink: string, basePrice: string, isBlogMode: boolean = false): Promise<PageData[]> {
   const clusters: PageData[] = [];
   const currentYear = new Date().getFullYear();
 
-  INTENT_TEMPLATES.forEach(template => {
+  // If NOT in Blog Mode (Landing Page Mode), we only want the main review.
+  // If in Blog Mode, we want the full topical map.
+  const activeTemplates = isBlogMode ? INTENT_TEMPLATES : [INTENT_TEMPLATES[0]]; // Default to just Review for Landing
+
+  for (const template of activeTemplates) {
+    const targetKeyword = `${productName} ${template.suffix}`;
+
+    // 🔍 THE SCOUT: Check if we can win this keyword
+    const research = await checkKeywordCompetition(targetKeyword);
+    let finalKeyword = targetKeyword;
+
+    if (research.verdict === "STOP" || research.score < 40) {
+      console.log(`⚠️ Competition too high for "${targetKeyword}". Pivoting to Long-Tail...`);
+      // Pivot Strategy: Add specific modifiers to find a gap
+      finalKeyword = `${targetKeyword} for small business`;
+    }
+
     // Generate a SEO-optimized slug
-    const slug = `${productName.toLowerCase().replace(/\s+/g, '-')}-${template.suffix.toLowerCase().replace(/\s+/g, '-')}`;
+    const slug = finalKeyword.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
     // Dynamic Title
     const title = template.titleTemplate
@@ -79,14 +96,14 @@ export function generateClusters(productName: string, affiliateLink: string, bas
 
     clusters.push({
       slug,
-      keyword: `${productName} ${template.suffix}`,
+      keyword: finalKeyword,
       title,
       description: `Read our honest ${title}. We test features, pricing, and pros/cons. Updated for ${currentYear}.`,
       intro_text: intro,
       products,
       affiliate_link: affiliateLink
     });
-  });
+  }
 
   return clusters;
 }
